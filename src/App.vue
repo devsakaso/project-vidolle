@@ -91,7 +91,7 @@ export default {
     return {
       drawer: false,
       items: [
-        { title: 'Home', icon: 'mdi-view-dashboard', to: '/' },
+        { title: 'Playlists', icon: 'mdi-view-dashboard', to: '/' },
         { title: 'About', icon: 'mdi-forum', to: '/about' },
       ],
     }

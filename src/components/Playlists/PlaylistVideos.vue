@@ -1,15 +1,22 @@
 <template>
-  <div class="home pa-4">
-    HOME
-    
+  <div>
+
+  <h1>PlaylistVideos</h1>
+
   </div>
 </template>
 
 <script>
 
+
 export default {
-  name: 'Home',
+  name: 'PlaylistVideos',
   components: {
+
   }
 }
 </script>
+
+<style>
+
+</style>
