@@ -1,5 +1,7 @@
 <template>
-  <div class="home">
+  <div class="home pa-4">
+    HOME
+    
   </div>
 </template>
 
