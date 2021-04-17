@@ -1,5 +1,4 @@
 <template>
-  <!-- :disabled="$store.state.sorting"は、並び替えモード中に検索するとデータが消えてしまうので、disabledにして検索できないようにする -->
   <v-text-field
     :value="$store.state.search"
     @input="$store.commit('setSearch', $event)"
@@ -8,12 +7,13 @@
     :disabled="$store.state.sorting"
     :class="{ 'closed': searchClosed && !$store.state.search}"
     class="mt-1 expanding-search"
-    placeholder="検索"
+    placeholder="プレイリストを検索"
     dense
     filled
     clearable
     prepend-inner-icon="mdi-magnify"
   ></v-text-field>
+  <!-- :disabled="$store.state.sorting"は、並び替えモード中に検索するとデータが消えてしまうので、disabledにして検索できないようにする -->
 </template>
 
 <script>

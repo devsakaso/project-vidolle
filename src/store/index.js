@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    // Appタイトル(環境変数)
+    // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // 検索
     search: null,
@@ -166,7 +166,7 @@ export default new Vuex.Store({
         return state.playlists
       }
       return state.playlists.filter(playlist => {
-        playlist.title.toLowerCase().includes(state.search.toLowerCase())
+       return playlist.title.toLowerCase().includes(state.search.toLowerCase())
       })
     }
   }
