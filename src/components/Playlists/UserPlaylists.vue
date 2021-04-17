@@ -1,24 +1,30 @@
 <template>
   <div>
-  <h2>UserPlaylists</h2>
-    <PlaylistVideos/>
-    <VideoNotes/>
-    <PlaylistMenu/>
+    <h2>すべてのプレイリスト</h2>
+    <v-list
+    flat
+    class="pt-0"
+    >
+
+    </v-list>
+    <UserPlaylist
+    v-for="playlist in $store.state.playlists"
+    :key="playlist.id"
+    :playlist="playlist"
+    />
   </div>
 </template>
 
 <script>
-import PlaylistVideos from '@/components/playlists/PlaylistVideos.vue'
-import VideoNotes from '@/components/playlists/VideoNotes.vue'
-import PlaylistMenu from '@/components/playlists/PlaylistMenu.vue'
+import UserPlaylist from '@/components/playlists/UserPlaylist.vue'
+
 
 export default {
   name: 'UserPlaylists',
     components: {
-      PlaylistVideos,
-      VideoNotes,
-      PlaylistMenu,
-  }
+      UserPlaylist,
+  },
+  
 }
 </script>
 

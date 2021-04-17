@@ -2,10 +2,10 @@
   <div class="home">
 
     <!-- playlistがあるとき -->
-    <UserPlaylists/>
+    <UserPlaylists v-if="$store.state.playlists.length"/>
 
     <!-- playlistがないとき -->
-    <NoPlaylists/>
+    <NoPlaylists v-else/>
 
     
   </div>

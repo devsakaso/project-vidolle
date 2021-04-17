@@ -18,7 +18,7 @@
       <!-- ドロワーアイコン -->
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title>Title</v-app-bar-title>
+      <v-app-bar-title>Vidolle</v-app-bar-title>
 
       <v-spacer></v-spacer>
 
@@ -34,6 +34,9 @@
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
+
+      <!-- プレイリスト追加のフィールド -->
+      <FieldAddPlaylist v-if="$route.path === '/'" />
     </v-app-bar>
 
     <!-- ドロワーメニュー -->
@@ -80,11 +83,13 @@
 </template>
 
 <script>
+import FieldAddPlaylist from '@/components/playlists/FieldAddPlaylist.vue'
 
 export default {
   name: 'App',
 
   components: {
+    FieldAddPlaylist,
   },
 
   data() {
@@ -95,6 +100,9 @@ export default {
         { title: 'About', icon: 'mdi-forum', to: '/about' },
       ],
     }
+  },
+  mounted() {
+    this.$store.dispatch('getPlaylists')
   }
 };
 </script>
