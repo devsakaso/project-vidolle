@@ -149,7 +149,7 @@ export default new Vuex.Store({
     },
     // プレイリストの取得
     getPlaylists({ commit }) {
-      db.collection('plyalists').get().then(playlists => {
+      db.collection('playlists').get().then(playlists => {
         commit('setPlaylists', playlists)
       })
     },

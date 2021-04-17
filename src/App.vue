@@ -44,6 +44,8 @@
       v-model="drawer"
       absolute
       temporary
+      app
+      :mobile-breakpoint="768"
     >
       <v-list-item>
         <v-list-item-avatar>
@@ -91,13 +93,11 @@ import Search from '@/components/tools/Search.vue'
 
 export default {
   name: 'App',
-
   components: {
     FieldAddPlaylist,
     Snackbar,
     Search,
   },
-
   data() {
     return {
       drawer: false,

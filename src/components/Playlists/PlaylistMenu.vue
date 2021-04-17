@@ -29,37 +29,70 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
-
     </v-menu>
+
+    <!-- edit -->
+    <DialogEdit
+    v-if="dialogs.edit"
+    :playlist="playlist"
+    @close="dialogs.edit = false"
+    />
+    <!-- dueDate -->
+    <DialogDueDate
+    v-if="dialogs.dueDate"
+    :playlist="playlist"
+    @close="dialogs.dueDate = false"
+    />
+
+    <!-- delete -->
+    <DialogDelete
+    v-if="dialogs.delete"
+    :playlist="playlist"
+    @close="dialogs.delete = false"
+    />
   </div>
 </template>
 
 <script>
+import DialogEdit from '@/components/dialogs/DialogEdit.vue'
+import DialogDelete from '@/components/dialogs/DialogDelete.vue'
+import DialogDueDate from '@/components/dialogs/DialogDueDate.vue'
+
 export default {
   name: 'PlaylistMenu',
-  props: ['playlist'],
+  props: ['playlist'], //UserPlyalist.vueから受け取る
+  components: {
+    DialogEdit,
+    DialogDelete,
+    DialogDueDate,
+  },
   data() {
     return {
+      dialogs: {
+        edit: false,
+        dueDate: false,
+        delete: false
+      },
       items: [
         {
           title: '編集',
           icon: 'mdi-lead-pencil',
           click() {
-            console.log('編集');
+            this.dialogs.edit = true
           }
         },
         {
           title: '締切日',
           icon: 'mdi-calendar-alert',
           click() {
-            console.log('締切日');
+            this.dialogs.dueDate = true
           }
         },
         {
           title: '削除',
           icon: 'mdi-delete',
           click() {
-            console.log('削除');
+            this.dialogs.delete = true
           }
         },
         {
@@ -67,7 +100,7 @@ export default {
           icon: 'mdi-drag-horizontal-veriant',
           click() {
             console.log('並び替え');
-          }
+          } 
         },
       ]
     }
