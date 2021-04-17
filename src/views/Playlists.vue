@@ -6,7 +6,10 @@
 
     <!-- playlistがないとき -->
     <NoPlaylists v-else/>
-search word: {{$store.state.search}}
+
+    <!-- ソート終了ボタン -->
+    <!-- ソートがtrueのときのみ表示 -->
+    <ButtonDoneSorting v-if="$store.state.sorting"/>
     
   </div>
 </template>
@@ -14,13 +17,14 @@ search word: {{$store.state.search}}
 <script>
 import UserPlaylists from '@/components/playlists/UserPlaylists.vue'
 import NoPlaylists from '@/components/playlists/NoPlaylists.vue'
-
+import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 
 export default {
   name: 'Playlists',
   components: {
     UserPlaylists,
     NoPlaylists,
+    ButtonDoneSorting,
   }
 }
 </script>

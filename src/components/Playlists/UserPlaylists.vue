@@ -7,23 +7,39 @@
     >
 
     </v-list>
-    <UserPlaylist
-    v-for="playlist in $store.getters.playlistsFiltered"
-    :key="playlist.id"
-    :playlist="playlist"
-    />
+    <draggable
+      v-model="playlists"
+      handle=".handle"
+    >
+      <UserPlaylist
+      v-for="playlist in playlists"
+      :key="playlist.id"
+      :playlist="playlist"
+      />
+   </draggable>
   </div>
 </template>
 
 <script>
 import UserPlaylist from '@/components/playlists/UserPlaylist.vue'
-
+import draggable from "vuedraggable";
 
 export default {
   name: 'UserPlaylists',
     components: {
       UserPlaylist,
+      draggable,
   },
+  computed: {
+    playlists: {
+      get() {
+        return this.$store.getters.playlistsFiltered
+      },
+      set(value) {
+        this.$store.dispatch('setPlaylists', value)
+      }
+    }
+  }
   
 }
 </script>

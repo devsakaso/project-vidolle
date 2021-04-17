@@ -41,6 +41,7 @@
         >
           <v-btn
             color="primary"
+            class="handle"
             icon
           >
             <v-icon>mdi-drag-horizontal-variant</v-icon>
@@ -70,6 +71,9 @@ export default {
 </script>
 
 
-<style>
-
+<style lang="sass">
+  .sortable-ghost
+    opacity: 0
+  .sortable-drag
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
 </style>
