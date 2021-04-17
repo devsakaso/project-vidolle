@@ -8,7 +8,7 @@
 
     </v-list>
     <UserPlaylist
-    v-for="playlist in $store.state.playlists"
+    v-for="playlist in $store.getters.playlistsFiltered"
     :key="playlist.id"
     :playlist="playlist"
     />

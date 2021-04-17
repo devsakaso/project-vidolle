@@ -6,7 +6,7 @@
 
     <!-- playlistがないとき -->
     <NoPlaylists v-else/>
-
+search word: {{$store.state.search}}
     
   </div>
 </template>

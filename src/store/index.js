@@ -113,6 +113,15 @@ export default new Vuex.Store({
         commit('showSnackbar', '追加しました')
       })
     },
+    // プレイリストの完了
+    donePlaylist({ state, commit }, id) {
+      let playlist = state.playlists.filter(playlist => playlist.id === id)[0]
+      db.collection('playlists').doc({ id: id }).update({
+        done: !playlist.done
+      }).then(() => {
+        commit('donePlaylist', id)
+      })
+    },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
       db.collection('playlists').doc({ id: id }).delete().then(() => {
