@@ -16,8 +16,8 @@ export default {
   name: 'UserPlaylists',
     components: {
       PlaylistVideos,
-    VideoNotes,
-    PlaylistMenu,
+      VideoNotes,
+      PlaylistMenu,
   }
 }
 </script>
