@@ -15,6 +15,11 @@ export default new Vuex.Store({
     appTitle: process.env.VUE_APP_TITLE,
     // 検索
     search: null,
+    // スナックバー
+    snackbar: {
+      show: false,
+      text: ''
+    },
     // ソート
     sorting: false,
     // プレイリスト
@@ -67,6 +72,28 @@ export default new Vuex.Store({
     setPlaylists(state, playlists) {
       state.playlists = playlists
     },
+    // スナックバー
+    // textにはスナックバーのメッセージをいれる
+    showSnackbar(state, text) {
+      let timeout = 0
+      if(state.snackbar.show) {
+        state.snackbar.show = false
+        timeout = 10
+      }
+      // 2回目以降のメッセージの表示が短くなるためsetTimeoutを設定
+      setTimeout(() => {
+        state.snackbar.show = true
+        state.snackbar.text = text
+      }, timeout)
+    },
+    // スナックバーを隠す
+    hideSnackbar(state) {
+      state.snackbar.show = false
+    },
+    // 並び替えモードのトグル
+    toggleSorting(state) {
+      state.sorting = !state.sorting
+    }
   },
   actions: {
     // プレイリストの追加
@@ -79,12 +106,14 @@ export default new Vuex.Store({
       }
       db.collection('playlists').add(newPlaylist).then(() => {
         commit('addPlaylist', newPlaylist)
+        commit('showSnackbar', '追加しました')
       })
     },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
       db.collection('playlists').doc({ id: id }).delete().then(() => {
         commit('deletePlaylist', id)
+        commit('showSnackbar', '削除しました')
       })
     },
     // プレイリストの更新
@@ -93,6 +122,7 @@ export default new Vuex.Store({
         title: payload.title
       }).then(() => {
         commit('updatePlaylistTitle', payload)
+        commit('showSnackbar', '変更を保存しました')
       })
     },
     // プレイリストの締切日の変更
@@ -101,6 +131,7 @@ export default new Vuex.Store({
         dueDate: payload.dueDate
       }).then(() => {
         commit('updatePlaylistDueDate', payload)
+        commit('showSnackbar', '締切日を変更しました')
       })
     },
     // プレイリストの取得

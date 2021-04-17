@@ -78,18 +78,22 @@
     <!-- main -->
     <v-main>
       <router-view></router-view>
+      <!-- スナックバー -->
+      <Snackbar/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import FieldAddPlaylist from '@/components/playlists/FieldAddPlaylist.vue'
+import Snackbar from '@/components/shared/Snackbar.vue'
 
 export default {
   name: 'App',
 
   components: {
     FieldAddPlaylist,
+    Snackbar,
   },
 
   data() {
