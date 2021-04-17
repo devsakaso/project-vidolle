@@ -67,7 +67,8 @@ export default {
         }
         this.$store.dispatch('updatePlaylistTitle', payload)
         this.$emit('close') //dialogを閉じる、親のPlaylistMenu.vueからemitされているcloseを使う
-
+        // VuetifyのGoto()で常にトップにスクロールするように設定
+        this.$vuetify.goTo(0, {duration: 0})
       }
     }
   }

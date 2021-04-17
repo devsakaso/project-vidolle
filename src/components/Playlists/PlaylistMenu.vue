@@ -97,7 +97,7 @@ export default {
         },
         {
           title: '並び替え',
-          icon: 'mdi-drag-horizontal-veriant',
+          icon: 'mdi-drag-horizontal-variant',
           click() {
             // 検索でワード絞ってからソートしたら絞った単語しか表示されなくなるので検索中のソートを禁止する
             if(!this.$store.state.search) {

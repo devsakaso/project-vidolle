@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Playlists from '../views/Playlists.vue'
 
+// VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
+import goTo from 'vuetify/es5/services/goto'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,6 +27,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+
+
+// 0はトップなのでtoTo(0)とする
+router.afterEach(() => {
+  goTo(0, {duration: 0})
 })
 
 export default router

@@ -5,8 +5,9 @@
       app
       color="primary"
       dark
-      shrink-on-scroll
       src="appbar.jpg"
+      prominent
+      :height="$route.path === '/' ? '235' : '170'"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -15,34 +16,29 @@
         ></v-img>
       </template>
 
-      <!-- ドロワーアイコン -->
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-container class="pa-0 header-container">
+        <v-row>
+          <!-- ドロワーアイコン -->
+          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-spacer></v-spacer>
 
-      <v-app-bar-title>Vidolle</v-app-bar-title>
+          <v-app-bar-title>Vidolle</v-app-bar-title>
 
-      <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-      <!-- 右メニュー -->
-      <!-- 検索バー -->
-      <!-- 検索スペースを広げるためにgridを使った(v-container&v-row) -->
-      <Search/>
+          <!-- 検索バー -->
+          <!-- 検索スペースを広げるためにgridを使った(v-container&v-row) -->
+          <Search/>
+        </v-row>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-
-      <!-- プレイリスト追加のフィールド -->
-      <FieldAddPlaylist v-if="$route.path === '/'" />
+          <!-- プレイリスト追加のフィールド -->
+          <FieldAddPlaylist v-if="$route.path === '/'" />
+      </v-container>
     </v-app-bar>
 
     <!-- ドロワーメニュー -->
     <v-navigation-drawer
       v-model="drawer"
-      absolute
       temporary
       app
       :mobile-breakpoint="768"
@@ -113,3 +109,7 @@ export default {
 };
 </script>
 
+<style lang="sass">
+  .header-container
+    max-width: none !important
+</style>
