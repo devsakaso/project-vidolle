@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import PlaylistVideos from '@/components/Playlists/PlaylistVideos.vue'
-import VideoNotes from '@/components/Playlists/VideoNotes.vue'
-import PlaylistMenu from '@/components/Playlists/PlaylistMenu.vue'
+import PlaylistVideos from '@/components/playlists/PlaylistVideos.vue'
+import VideoNotes from '@/components/playlists/VideoNotes.vue'
+import PlaylistMenu from '@/components/playlists/PlaylistMenu.vue'
 
 export default {
   name: 'UserPlaylists',

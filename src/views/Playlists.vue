@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import UserPlaylists from '@/components/Playlists/UserPlaylists.vue'
-import NoPlaylists from '@/components/Playlists/NoPlaylists.vue'
+import UserPlaylists from '@/components/playlists/UserPlaylists.vue'
+import NoPlaylists from '@/components/playlists/NoPlaylists.vue'
 
 
 export default {
