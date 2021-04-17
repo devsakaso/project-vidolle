@@ -22,7 +22,12 @@
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
 
-          <v-app-bar-title>Vidolle</v-app-bar-title>
+        <!-- タイトル -->
+        <v-row>
+          <v-app-bar-title class="text-h4 ml-4">
+            {{ $store.state.appTitle }}
+          </v-app-bar-title>
+        </v-row>
 
           <v-spacer></v-spacer>
 
