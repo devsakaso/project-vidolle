@@ -23,9 +23,9 @@
       <v-spacer></v-spacer>
 
       <!-- 右メニュー -->
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      <!-- 検索バー -->
+      <!-- 検索スペースを広げるためにgridを使った(v-container&v-row) -->
+      <Search/>
 
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -87,6 +87,7 @@
 <script>
 import FieldAddPlaylist from '@/components/playlists/FieldAddPlaylist.vue'
 import Snackbar from '@/components/shared/Snackbar.vue'
+import Search from '@/components/tools/Search.vue'
 
 export default {
   name: 'App',
@@ -94,6 +95,7 @@ export default {
   components: {
     FieldAddPlaylist,
     Snackbar,
+    Search,
   },
 
   data() {

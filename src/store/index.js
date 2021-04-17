@@ -90,6 +90,10 @@ export default new Vuex.Store({
     hideSnackbar(state) {
       state.snackbar.show = false
     },
+    // 検索
+    setSearch(state, value) {
+      state.search = value
+    },
     // 並び替えモードのトグル
     toggleSorting(state) {
       state.sorting = !state.sorting
@@ -146,4 +150,15 @@ export default new Vuex.Store({
     }
 
   },
+  getters: {
+    // 検索ワードをフィルターにかける(大文字/小文字無視できるように)
+    playlistsFiltered(state) {
+      if(!state.search) {
+        return state.playlists
+      }
+      return state.playlists.filter(playlist => {
+        playlist.title.toLowerCase().includes(state.search.toLowerCase())
+      })
+    }
+  }
 })
