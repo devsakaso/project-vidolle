@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-list-item
-    @click="$store.dispatch('donePlaylist', playlist.id)"
     :class="{'blue lighten-5' : playlist.done}"
     class="white"
     :ripple="false"
@@ -9,7 +8,11 @@
       <template v-slot:default>
         <!-- チェックボックス -->
         <v-list-item-action>
-          <v-checkbox :input-value="playlist.done"></v-checkbox>
+          <v-checkbox
+            :input-value="playlist.done"
+            @click="$store.dispatch('donePlaylist', playlist.id)"
+            
+            ></v-checkbox>
         </v-list-item-action>
 
         <!-- プレイリストタイトル -->
