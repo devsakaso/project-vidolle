@@ -39,7 +39,7 @@ export default {
         this.$store.dispatch('setPlaylists', value)
       }
     }
-  }
+  },
   
 }
 </script>

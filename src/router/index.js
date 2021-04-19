@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Playlists from '../views/Playlists.vue'
+import UserPlaylistDetails from '@/components/playlists/UserPlaylistDetails.vue'
 
 // VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
 import goTo from 'vuetify/es5/services/goto'
@@ -20,7 +21,13 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/playlists/:id',
+    name: 'UserPlaylistDetails',
+    component: UserPlaylistDetails,
+    props: true
+  },
 ]
 
 const router = new VueRouter({

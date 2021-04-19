@@ -11,6 +11,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    title: '',
+    url: '',
+    videos: [],
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // 検索
@@ -68,10 +71,45 @@ export default new Vuex.Store({
       let playlist = state.playlists.filter(playlist => playlist.id === payload.id) [0]
       playlist.dueDate = payload.dueDate
     },
-    // 並び替え
+    // プレイリスト並び替え
     setPlaylists(state, playlists) {
       state.playlists = playlists
     },
+    // 
+    // 
+    // 
+    // 
+    // ビデオの追加
+    addVideo(state, newVideo) {
+      state.videos.push(newVideo)
+    },
+    // ビデオの完了・未完了
+    doneVideo(state, id) {
+      let video = state.videos.filter(video => video.id === id)[0]
+      video.done = !video.done
+    },
+    // ビデオの削除
+    deleteVideo(state, id) {
+      state.videos = state.videos.filter(video => video.id !== id)
+    },
+    // ビデオタイトルの更新
+    updateVideoTitle(state, payload) {
+      let video = state.videos.filter(video => video.id === payload.id)[0]
+      video.title = payload.title
+    },
+    // ビデオ締切日の更新
+    updateVideoDueDate(state, payload) {
+      let video = state.videos.filter(video => video.id === payload.id) [0]
+      video.dueDate = payload.dueDate
+    },
+    // ビデオの並び替え
+    setVideos(state, videos) {
+      state.videos = videos
+    },
+    // 
+    // 
+    // 
+    // 
     // スナックバー
     // textにはスナックバーのメッセージをいれる
     showSnackbar(state, text) {
@@ -156,8 +194,69 @@ export default new Vuex.Store({
     setPlaylists({ commit }, playlists) {
       db.collection('playlists').set(playlists)
       commit('setPlaylists', playlists)
-    }
+    },
+    // 
+    // 
+    // 
+    // 
+    // ビデオの追加
+    addVideo({ commit }, newVideoTitle) {
+      let newVideo = {
+        id: Date.now(), //TODO: 要修正
+        title: newVideoTitle,
+        done: false,
+        dueDate: null,
 
+      }
+      db.collection('videos').add(newVideo).then(() => {
+        commit('addVideo', newVideo)
+        commit('showSnackbar', '追加しました')
+      })
+    },
+    // ビデオの完了
+    doneVideo({ state, commit }, id) {
+      let video = state.videos.filter(video => video.id === id)[0]
+      db.collection('videos').doc({ id: id }).update({
+        done: !video.done
+      }).then(() => {
+        commit('doneVideo', id)
+      })
+    },
+    // ビデオの削除
+    deleteVideo({ commit }, id) {
+      db.collection('videos').doc({ id: id }).delete().then(() => {
+        commit('deleteVideo', id)
+        commit('showSnackbar', '削除しました')
+      })
+    },
+    // ビデオの更新
+    updateVideoTitle({ commit }, payload) {
+      db.collection('videos').doc({ id: payload.id }).update({
+        title: payload.title
+      }).then(() => {
+        commit('updateVideoTitle', payload)
+        commit('showSnackbar', '変更を保存しました')
+      })
+    },
+    // ビデオの締切日の変更
+    updateVideoDueDate({ commit }, payload) {
+      db.collection('videos').doc({ id: payload.id }).update({
+        dueDate: payload.dueDate
+      }).then(() => {
+        commit('updateVideoDueDate', payload)
+        commit('showSnackbar', '締切日を変更しました')
+      })
+    },
+    // ビデオの取得
+    getVideos({ commit }) {
+      db.collection('videos').get().then(videos => {
+        commit('setVideos', videos)
+      })
+    },
+    setVideos({ commit }, videos) {
+      db.collection('videos').set(videos)
+      commit('setVideos', videos)
+    }
   },
   getters: {
     // 検索ワードをフィルターにかける(大文字/小文字無視できるように)
@@ -168,6 +267,14 @@ export default new Vuex.Store({
       return state.playlists.filter(playlist => {
        return playlist.title.toLowerCase().includes(state.search.toLowerCase())
       })
-    }
+    },
+    videosFiltered(state) {
+      if(!state.search) {
+        return state.videos
+      }
+      return state.videos.filter(video => {
+       return video.title.toLowerCase().includes(state.search.toLowerCase())
+      })
+    },
   }
 })
