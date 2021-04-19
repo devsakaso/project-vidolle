@@ -106,6 +106,9 @@ export default new Vuex.Store({
     setVideos(state, videos) {
       state.videos = videos
     },
+    // setPlaylistVideos(state, {videos, id}) {
+    //   state.videos = videos.filter(video => video.playlistId === id)
+    // },
     // 
     // 
     // 
@@ -200,13 +203,27 @@ export default new Vuex.Store({
     // 
     // 
     // ビデオの追加
-    addVideo({ commit }, newVideoTitle) {
+    // addVideo({ commit }, newVideoTitle) {
+    //   let newVideo = {
+    //     id: Date.now(), //TODO: 要修正
+    //     title: newVideoTitle,
+    //     done: false,
+    //     dueDate: null,
+
+    //   }
+    //   db.collection('videos').add(newVideo).then(() => {
+    //     commit('addVideo', newVideo)
+    //     commit('showSnackbar', '追加しました')
+    //   })
+    // },
+    addVideo({ commit }, {playlistId, newVideoTitle, url}) {
       let newVideo = {
         id: Date.now(), //TODO: 要修正
+        playlistId: playlistId,
         title: newVideoTitle,
+        url: url,
         done: false,
         dueDate: null,
-
       }
       db.collection('videos').add(newVideo).then(() => {
         commit('addVideo', newVideo)
@@ -248,11 +265,19 @@ export default new Vuex.Store({
       })
     },
     // ビデオの取得
-    getVideos({ commit }) {
+    // TODO: ビデオを全部取得してしまっているので要修正
+    // TODO: ソートするとデータ消える
+    getVideos({ commit }, id) {
       db.collection('videos').get().then(videos => {
-        commit('setVideos', videos)
+        let playlistVideos = videos.filter(video => video.playlistId === id)
+        commit('setVideos', playlistVideos)
       })
     },
+    // getVideos({ commit }) {
+    //   db.collection('videos').get().then(videos => {
+    //     commit('setVideos', videos)
+    //   })
+    // },
     setVideos({ commit }, videos) {
       db.collection('videos').set(videos)
       commit('setVideos', videos)

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Playlists from '../views/Playlists.vue'
-import UserPlaylistDetails from '@/components/playlists/UserPlaylistDetails.vue'
+import UserPlaylistDetails from '../views/UserPlaylistDetails.vue'
 
 // VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
 import goTo from 'vuetify/es5/services/goto'

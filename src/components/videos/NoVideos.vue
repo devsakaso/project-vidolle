@@ -10,7 +10,7 @@
     mdi-check
   </v-icon>
   <div class="text-h5 primary--text">
-    プレイリストがありません
+    動画がありません
   </div>
   </div>
 </template>

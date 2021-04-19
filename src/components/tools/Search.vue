@@ -7,7 +7,7 @@
     :disabled="$store.state.sorting"
     :class="{ 'closed': searchClosed && !$store.state.search}"
     class="mt-1 expanding-search"
-    placeholder="プレイリストを検索"
+    placeholder="検索"
     dense
     filled
     clearable

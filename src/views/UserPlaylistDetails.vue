@@ -1,9 +1,9 @@
 <template>
-  <div class="UserVideoDetails">
+  <div class="UserPlaylistDetails">
 
-    <FieldAddVideo/>
+    <FieldAddVideo :id="id"/>
     <!-- videoがあるとき -->
-    <UserVideos :playlistId="id" v-if="$store.state.videos.length"/>
+    <UserVideos :id="id" v-if="$store.state.videos.length"/>
 
     <!-- videoがないとき -->
     <NoVideos v-else/>
@@ -22,12 +22,16 @@ import FieldAddVideo from '@/components/videos/FieldAddVideo.vue'
 import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 
 export default {
-  name: 'UserVideoDetails',
+  name: 'UserPlaylistDetails',
+  props:['id'],
   components: {
     UserVideos,
     NoVideos,
     FieldAddVideo,
     ButtonDoneSorting,
-  }
+  },
+  //   mounted() {
+  //   this.$store.dispatch('getVideos', this.$props.id)
+  // }
 }
 </script>

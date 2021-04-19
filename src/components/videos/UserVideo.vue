@@ -23,7 +23,9 @@
           :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.title}"
           @click="setActiveVideo(video)"
           >
-              {{video.title}}
+              title: {{video.title}}
+              <br>
+              url: {{video.url}}
             </v-list-item-title>
             <!-- </router-link> -->
         </v-list-item-content>

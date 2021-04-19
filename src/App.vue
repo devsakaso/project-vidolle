@@ -110,7 +110,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getPlaylists')
-    this.$store.dispatch('getVideos')
+    // this.$store.dispatch('getVideos')
   }
 };
 </script>
