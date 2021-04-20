@@ -3,12 +3,12 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: VUE_APP_API_KEY,
-  authDomain: VUE_APP_AUTH_DOMAIN,
-  projectId: VUE_APP_PROJECT_ID,
-  storageBucket: VUE_APP_STORAGE_BUCKET,
-  messagingSenderId: VUE_APP_MESSAGING_SENDER_ID,
-  appId: VUE_APP_ID
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_ID
 };
 
 // firebase初期化
