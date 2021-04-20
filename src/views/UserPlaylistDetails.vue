@@ -1,5 +1,5 @@
 <template>
-  <div class="UserPlaylistDetails">
+  <div id="UserPlaylistDetails">
 
     <FieldAddVideo :id="id"/>
     <!-- videoがあるとき -->
