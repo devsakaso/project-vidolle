@@ -146,32 +146,41 @@ export default new Vuex.Store({
     addPlaylist({ commit }, newPlaylistTitle) {
       let newPlaylist = {
         // id: Date.now(), //TODO: 要修正
-        // id: null,
+        id: null,
         title: newPlaylistTitle,
         done: false,
         dueDate: null,
         createdAt: timestamp(),
-        videos: []
       }
-      db.collection('playlists').add(newPlaylist).then(() => {
+      db.collection('playlists').add(newPlaylist).then(doc => {
+        newPlaylist.id = doc.id //docのidを追加
         commit('addPlaylist', newPlaylist)
         commit('showSnackbar', '追加しました')
       })
     },
     // プレイリストの完了
-    donePlaylist({ state, commit }, id) {
-      let playlist = state.playlists.filter(playlist => playlist.id === id)[0]
-      db.collection('playlists').doc({ id: id }).update({
-        done: !playlist.done
-      }).then(() => {
+    donePlaylist({ commit }, id) {
+      db.collection('playlists').where("doc.id","==","id").get()
+      .then(() => {
         commit('donePlaylist', id)
       })
     },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
-      db.collection('playlists').doc({ id: id }).delete().then(() => {
-        commit('deletePlaylist', id)
-        commit('showSnackbar', '削除しました')
+      const ClickedPlaylist = db.collection('playlists').doc(id)
+      ClickedPlaylist.collection('videos').get().then(snapshot => {
+        // videosが空のときだけ削除
+        if(snapshot.size === 0) {
+          ClickedPlaylist.delete()
+          commit('deletePlaylist', id)
+          commit('showSnackbar', '削除しました')
+          // videosが空でないときはメッセージ
+        } else if ( snapshot.size > 0) {
+          commit('showSnackbar', '動画を削除してからプレイリストを削除してください')
+          this.state.snackbar.show = false
+        } else {
+          throw new Error
+        }
       })
     },
     // プレイリストの更新
@@ -215,18 +224,18 @@ export default new Vuex.Store({
     //     commit('setPlaylists', state.playlists)
     // },
     getPlaylists({state, commit}) {
-      db.collection('playlists').get().then(playlists => {
+      db.collection('playlists').orderBy('createdAt').get().then(playlists => {
         playlists.docs.forEach(doc => {
         state.playlists.push({...doc.data(), id: doc.id})
       })
     })
       commit('setPlaylists', state.playlists)
     },
-
-    setPlaylists({ commit }, playlists) {
-      db.collection('playlists').set(playlists)
-      commit('setPlaylists', playlists)
-    },
+    // プレイリストの並び替えのset
+    // setPlaylists({ commit }, playlists) {
+    //   db.collection('playlists').set(playlists)
+    //   commit('setPlaylists', playlists)
+    // },
     // 
     // 
     // 
