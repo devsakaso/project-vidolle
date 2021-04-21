@@ -10,7 +10,7 @@
         <v-list-item-action>
           <v-checkbox
             :input-value="playlist.done"
-            @click="$store.dispatch('donePlaylist', playlist.id)"
+            @click="$store.dispatch('donePlaylist', playlist)"
             
             ></v-checkbox>
         </v-list-item-action>

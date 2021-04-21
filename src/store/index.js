@@ -53,14 +53,14 @@ export default new Vuex.Store({
     addPlaylist(state, newPlaylist) {
       state.playlists.push(newPlaylist)
     },
-    // プレイリストの完了・未完了
-    donePlaylist(state, id) {
-      let playlist = state.playlists.filter(playlist => playlist.id === id)[0]
-      playlist.done = !playlist.done
-    },
     // プレイリストの削除
     deletePlaylist(state, id) {
       state.playlists = state.playlists.filter(playlist => playlist.id !== id)
+    },
+    // プレイリストの完了・未完了
+    donePlaylist(state, payload) {
+      let playlist = state.playlists.filter(playlist => playlist.id === payload.id)[0]
+      playlist.done = !playlist.done
     },
     // プレイリストタイトルの更新
     updatePlaylistTitle(state, payload) {
@@ -158,13 +158,6 @@ export default new Vuex.Store({
         commit('showSnackbar', '追加しました')
       })
     },
-    // プレイリストの完了
-    donePlaylist({ commit }, id) {
-      db.collection('playlists').where("doc.id","==","id").get()
-      .then(() => {
-        commit('donePlaylist', id)
-      })
-    },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
       const ClickedPlaylist = db.collection('playlists').doc(id)
@@ -183,18 +176,28 @@ export default new Vuex.Store({
         }
       })
     },
-    // プレイリストの更新
+    // プレイリストの完了
+    donePlaylist({ commit }, payload) {
+      db.collection('playlists').doc(payload.id).update({
+        done: !payload.done
+      })
+      .then(() => {
+        commit('donePlaylist', payload)
+      })
+    },
+    // プレイリストタイトルの更新
     updatePlaylistTitle({ commit }, payload) {
-      db.collection('playlists').doc({ id: payload.id }).update({
+      db.collection('playlists').doc(payload.id).update({
         title: payload.title
-      }).then(() => {
+      })
+      .then(() => {
         commit('updatePlaylistTitle', payload)
         commit('showSnackbar', '変更を保存しました')
       })
     },
     // プレイリストの締切日の変更
     updatePlaylistDueDate({ commit }, payload) {
-      db.collection('playlists').doc({ id: payload.id }).update({
+      db.collection('playlists').doc(payload.id).update({
         dueDate: payload.dueDate
       }).then(() => {
         commit('updatePlaylistDueDate', payload)
@@ -202,27 +205,6 @@ export default new Vuex.Store({
       })
     },
     // プレイリストの取得
-    // getPlaylists({ commit }) {
-    //   db.collection('playlists').get().then(playlists => {
-    //     console.log(playlists);
-    //     commit('setPlaylists', playlists)
-    //   })
-    // },
-    // getPlaylists({ state, commit }) {
-    //   let initPlaylists = []
-    //   db.collection('playlists')
-    //     .onSnapshot(
-    //       snap => {
-    //         snap.docs.forEach(doc => {
-    //           console.log(doc.data());
-    //           initPlaylists.push({ ...doc.data(), id: doc.id })
-    //         })      
-    //         // update values
-    //         state.playlists = initPlaylists
-    //         console.log(initPlaylists);
-    //       })
-    //     commit('setPlaylists', state.playlists)
-    // },
     getPlaylists({state, commit}) {
       db.collection('playlists').orderBy('createdAt').get().then(playlists => {
         playlists.docs.forEach(doc => {
