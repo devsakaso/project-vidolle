@@ -1,12 +1,11 @@
 <template>
   <div id="UserPlaylistDetails">
 
-    <FieldAddVideo :playlistId="id"/>
     <!-- videoがあるとき -->
     <UserVideos :playlistId="id" v-if="$store.state.videos.length"/>
 
     <!-- videoがないとき -->
-    <NoVideos v-else/>
+    <NoVideos :playlistId="id" v-else/>
 
     <!-- ソート終了ボタン -->
     <!-- ソートがtrueのときのみ表示 -->
@@ -18,7 +17,6 @@
 <script>
 import UserVideos from '@/components/videos/UserVideos.vue'
 import NoVideos from '@/components/videos/NoVideos.vue'
-import FieldAddVideo from '@/components/videos/FieldAddVideo.vue'
 import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 
 export default {
@@ -27,7 +25,6 @@ export default {
   components: {
     UserVideos,
     NoVideos,
-    FieldAddVideo,
     ButtonDoneSorting,
   },
   //   mounted() {

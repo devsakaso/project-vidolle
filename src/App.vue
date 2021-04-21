@@ -7,7 +7,7 @@
       dark
       src="appbar.jpg"
       prominent
-      :height="$route.path === '/' ? '170' : '150'"
+      :height="$route.path === '/' ? '150' : '100'"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -23,11 +23,9 @@
           <v-spacer></v-spacer>
 
         <!-- タイトル -->
-        <v-row>
           <v-app-bar-title class="text-h4">
             {{ $store.state.appTitle }}
           </v-app-bar-title>
-        </v-row>
 
           <v-spacer></v-spacer>
 
@@ -118,4 +116,8 @@ export default {
 <style lang="sass">
   .header-container
     max-width: none !important
+  // .v-app-bar-title__content
+  //   top: 0
+  //   left: 50%
+  //   transform: translateX(-50%)
 </style>

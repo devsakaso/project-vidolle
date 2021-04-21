@@ -1,6 +1,18 @@
 <template>
   <div>
-    <h2>id: {{playlistId}}の動画一覧</h2>
+    <v-container px-4>
+      <v-row
+        align="center"
+        justify="start">
+        <v-col cols="11">
+         <h2 class="primary--text">id: {{playlistId}}の動画一覧</h2>
+        </v-col>
+        <v-col cols="1">
+         <FieldAddVideo :playlistId="playlistId"/>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <v-list
     flat
     class="pt-0"
@@ -23,12 +35,14 @@
 <script>
 import UserVideo from '@/components/videos/UserVideo.vue'
 import draggable from "vuedraggable";
+import FieldAddVideo from '@/components/videos/FieldAddVideo.vue'
 
 export default {
   name: 'UserVideos',
   props: ['playlistId'],
   components: {
     UserVideo,
+    FieldAddVideo,
     draggable,
   },
   computed: {

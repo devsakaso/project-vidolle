@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>すべてのプレイリスト</h2>
+    <h2 class="primary--text my-4">すべてのプレイリスト</h2>
     <v-list
     flat
     class="pt-0"

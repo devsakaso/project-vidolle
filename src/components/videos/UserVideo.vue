@@ -51,18 +51,6 @@
            <VideoMenu :video="video" />
           </v-list-item-action>
 
-        <!-- ドラッグ -->
-        <v-list-item-action
-        v-if="$store.state.sorting"
-        >
-          <v-btn
-            color="primary"
-            class="handle"
-            icon
-          >
-            <v-icon>mdi-drag-horizontal-variant</v-icon>
-          </v-btn>
-        </v-list-item-action>
       </template>
     </v-list-item>
   </div>
@@ -93,16 +81,9 @@ export default {
   methods: {
     setActiveVideo(video) {
       this.activeVideo = video.title
-      console.log(video.id)
+      console.log(video.videoId)
     }
   }
 }
 </script>
 
-
-<style lang="sass">
-  .sortable-ghost
-    opacity: 0
-  .sortable-drag
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
-</style>
