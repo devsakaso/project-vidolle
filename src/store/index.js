@@ -69,7 +69,7 @@ export default new Vuex.Store({
     },
     // プレイリスト締切日の更新
     updatePlaylistDueDate(state, payload) {
-      let playlist = state.playlists.filter(playlist => playlist.id === payload.id) [0]
+      let playlist = state.playlists.filter(playlist => playlist.id === payload.id)[0]
       playlist.dueDate = payload.dueDate
     },
     // プレイリスト並び替え
@@ -167,7 +167,7 @@ export default new Vuex.Store({
           ClickedPlaylist.delete()
           commit('deletePlaylist', id)
           commit('showSnackbar', '削除しました')
-          // videosが空でないときはメッセージ
+        // videosが空でないときはメッセージ
         } else if ( snapshot.size > 0) {
           commit('showSnackbar', '動画を削除してからプレイリストを削除してください')
           this.state.snackbar.show = false
@@ -288,25 +288,18 @@ export default new Vuex.Store({
     // TODO: ビデオを全部取得してしまっているので要修正
     // TODO: ソートするとデータ消える
     getVideos({ state, commit }, id) {
-      db.collection('playlists').doc(id).collection('videos').get().then(videos => {
-        videos.docs.forEach(doc => {
-          console.log(doc.data());
-          state.videos.push({...doc.data(), id: doc.id})
+     db.collection('playlists').doc(id).collection('videos')
+      .onSnapshot(snap => {
+        let results = []
+        snap.docs.forEach(doc => {
+          // must wait for the server to create the timestamp & send it back
+          results.push({ ...doc.data(), id: doc.id })
+          console.log(results)
         })
-        commit('setVideos', state.videos)
+        state.videos = results
       })
+      commit('setVideos', state.videos)
     },
-    // getVideos({ commit }, id) {
-    //   db.collection('videos').get().then(videos => {
-    //     let playlistVideos = videos.filter(video => video.playlistId === id)
-    //     commit('setVideos', playlistVideos)
-    //   })
-    // },
-    // getVideos({ commit }) {
-    //   db.collection('videos').get().then(videos => {
-    //     commit('setVideos', videos)
-    //   })
-    // },
     setVideos({ commit }, videos) {
       db.collection('videos').set(videos)
       commit('setVideos', videos)
