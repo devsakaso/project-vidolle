@@ -5,7 +5,7 @@
     <v-dialog
       v-model="addVideoDialog"
       max-width="1200px"
-
+      persistent
     >
       <!-- ダイアログを開くボタン -->
       <template v-slot:activator="{ on, attrs }">
@@ -108,7 +108,9 @@
               <v-card-title>
                 <span class="headline">YouTube検索</span>
               </v-card-title>
-              <SearchVideo/>
+              <SearchVideo
+              :playlistId="playlistId"
+              />
               </v-card>
             </v-tab-item>
 

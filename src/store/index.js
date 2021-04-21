@@ -243,6 +243,22 @@ export default new Vuex.Store({
         commit('showSnackbar', '追加しました')
       })
     },
+    // YouTube検索からビデオの追加
+    addVideoFromSearch({ commit }, {playlistId, videoId, newVideoTitle, url}) {
+      let newVideo = {
+        videoId: videoId,
+        playlistId: playlistId,
+        title: newVideoTitle,
+        url: url,
+        done: false,
+        dueDate: null,
+        createdAt: timestamp(),
+      }
+      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(doc => {
+        newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
+        commit('addVideo', newVideo)
+      })
+    },
     // ビデオの完了
     doneVideo({ commit }, payload) {
       db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({

@@ -28,7 +28,10 @@
         cols="12"
         md="4"
       >
-        <a v-bind:href="'https://www.youtube.com/watch?v=' + video.id.videoId" target="_blank" rel="noopener noreferrer">
+        <a
+          :href="'https://www.youtube.com/watch?v=' + video.id.videoId"
+          target="_blank"
+          rel="noopener noreferrer">
           <v-img
             max-height="250"
             :src="video.snippet.thumbnails.medium.url"
@@ -50,7 +53,7 @@
         <v-btn
           color="primary"
           dark
-          @click="addVideo(i)"
+          @click="addVideo(video)"
         >
           保存する
           <v-icon dark>
@@ -80,6 +83,12 @@
           <v-card-text>
             publishTime: {{ video.snippet.publishTime}}
           </v-card-text>
+          <v-text-field :value="video.snippet.title">
+             {{ video.snippet.title }}
+          </v-text-field>
+          <v-text-field :value="video.id.videoId">
+             https://www.youtube.com/watch?v={{video.id.videoId}}
+          </v-text-field>
         </div>
       </v-expand-transition>
   </v-container>
@@ -93,6 +102,7 @@ import axios from 'axios';
 
 export default {
   name: "SearchVideo",
+  props: ['playlistId'],
   data () {
     return {
       results: null,
@@ -113,19 +123,29 @@ export default {
   methods: {
     searchVideo () {
       this.params.q = this.keyword;
-      const self = this;
       axios
         .get("https://www.googleapis.com/youtube/v3/search", {
           params: this.params
         })
-        .then(function(res) {
-          console.log(res);
-          self.results = res.data.items;
-          console.log(self.results);
+        .then( res => {
+          this.results = res.data.items;
+          // this.results.forEach(video => {
+          //   this.newVideoTitle = video.snippet.title
+          //   this.newVideoUrl = 'https://www.youtube.com/watch?v=' + video.id.videoId
+          //   console.log(this.newVideoTitle, this.newVideoUrl);
+          // })
         })
     },
-    addVideo(i) {
-      console.log(i)
+    addVideo(video) {
+      console.log(video)
+        const playlistId = this.$props.playlistId
+        const videoId = null
+        const newVideoTitle = video.snippet.title
+        const url = 'https://www.youtube.com/watch?v=' + video.id.videoId
+        console.log(playlistId, "id以外:", videoId, newVideoTitle, url,this.newVideoTitle,this.newVideoUrl);
+        this.$store.dispatch('addVideoFromSearch', {playlistId, videoId, newVideoTitle, url})
+        this.newVideoTitle = ''
+        this.newVideoUrl = ''
     }
   }
 };
