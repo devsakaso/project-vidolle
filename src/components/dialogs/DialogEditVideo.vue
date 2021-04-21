@@ -12,7 +12,11 @@
           <v-card-text>
             保存しますか？
             <v-text-field
-            v-model="videoTitle"
+            v-model="title"
+            text
+          ></v-text-field>
+            <v-text-field
+            v-model="url"
             text
           ></v-text-field>
           </v-card-text>
@@ -45,26 +49,31 @@ export default {
   props: ['video'],
   data() {
     return {
-      videoTitle: null,
+      title: null,
+      url: null,
     }
   },
   computed: {
     videoTitleInvalid() {
-      // タイトルが空白 || 同じ（編集されていない）場合
-      return !this.videoTitle || this.videoTitle === this.video.title
+      // タイトルが空白||urlが空白 || タイトルとurlのどちらかが同じ（編集されていない）場合
+      return !this.title || !this.url || this.title === this.video.title && this.url === this.video.url
     }
   },
-  // mount時にタイトルをvideoTitleに格納することで表示できるようになる
+  // mount時にタイトルをvideoTitle,urlに格納することで表示できるようになる
   mounted() {
-    this.videoTitle = this.video.title
+    this.title = this.video.title
+    this.url = this.video.url
   },
   methods: {
     saveVideo() {
       if(!this.videoTitleInvalid) { //this忘れがち
           let payload = {
-            id: this.video.id, //idは選択されたもの
-          title: this.videoTitle //titleは入力されたもの
+          playlistId: this.video.playlistId,
+          videoId: this.video.videoId, //idは選択されたもの
+          title: this.title, //titleは入力されたもの
+          url: this.url //urlは入力されたもの
         }
+        console.log(payload);
         this.$store.dispatch('updateVideoTitle', payload)
         this.$emit('close') //dialogを閉じる、親のVideoMenu.vueからemitされているcloseを使う
         // VuetifyのGoto()で常にトップにスクロールするように設定

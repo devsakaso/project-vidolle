@@ -85,23 +85,26 @@ export default new Vuex.Store({
       state.videos.push(newVideo)
     },
     // ビデオの完了・未完了
-    doneVideo(state, id) {
-      let video = state.videos.filter(video => video.id === id)[0]
-      video.done = !video.done
+    doneVideo(state, payload) {
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.done = !video.done
     },
     // ビデオの削除
-    deleteVideo(state, id) {
-      state.videos = state.videos.filter(video => video.id !== id)
+    deleteVideo(state, payload) {
+      state.videos = state.videos.filter(video => video.videoId !== payload.videoId)
     },
     // ビデオタイトルの更新
     updateVideoTitle(state, payload) {
-      let video = state.videos.filter(video => video.id === payload.id)[0]
-      video.title = payload.title
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.title = payload.title
     },
     // ビデオ締切日の更新
     updateVideoDueDate(state, payload) {
-      let video = state.videos.filter(video => video.id === payload.id) [0]
-      video.dueDate = payload.dueDate
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.dueDate = payload.dueDate
     },
     // ビデオの並び替え
     setVideos(state, videos) {
@@ -183,6 +186,7 @@ export default new Vuex.Store({
       })
       .then(() => {
         commit('donePlaylist', payload)
+        console.log(payload.done);
       })
     },
     // プレイリストタイトルの更新
@@ -223,53 +227,46 @@ export default new Vuex.Store({
     // 
     // 
     // ビデオの追加
-    // addVideo({ commit }, newVideoTitle) {
-    //   let newVideo = {
-    //     id: Date.now(), //TODO: 要修正
-    //     title: newVideoTitle,
-    //     done: false,
-    //     dueDate: null,
-
-    //   }
-    //   db.collection('videos').add(newVideo).then(() => {
-    //     commit('addVideo', newVideo)
-    //     commit('showSnackbar', '追加しました')
-    //   })
-    // },
-    addVideo({ commit }, {playlistId, newVideoTitle, url}) {
+    addVideo({ commit }, {playlistId, videoId, newVideoTitle, url}) {
       let newVideo = {
-        // id: Date.now(), //TODO: 要修正
+        videoId: videoId,
         playlistId: playlistId,
         title: newVideoTitle,
         url: url,
         done: false,
         dueDate: null,
+        createdAt: timestamp(),
       }
-      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(() => {
+      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(doc => {
+        newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
         commit('addVideo', newVideo)
         commit('showSnackbar', '追加しました')
       })
     },
     // ビデオの完了
-    doneVideo({ state, commit }, id) {
-      let video = state.videos.filter(video => video.id === id)[0]
-      db.collection('videos').doc({ id: id }).update({
-        done: !video.done
-      }).then(() => {
-        commit('doneVideo', id)
+    doneVideo({ commit }, payload) {
+      db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({
+        done: !payload.done
+      })
+      .then(() => {
+        commit('doneVideo', payload)
+        console.log(payload.done, payload.title); //TODO: なぜか逆の結果が出力される
       })
     },
     // ビデオの削除
-    deleteVideo({ commit }, id) {
-      db.collection('videos').doc({ id: id }).delete().then(() => {
-        commit('deleteVideo', id)
+    deleteVideo({ commit }, payload) {
+      db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).delete().then(() => {
+        commit('deleteVideo', payload)
         commit('showSnackbar', '削除しました')
+
       })
     },
-    // ビデオの更新
+    // ビデオタイトルとurlの更新
     updateVideoTitle({ commit }, payload) {
-      db.collection('videos').doc({ id: payload.id }).update({
-        title: payload.title
+      db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({
+        videoId: payload.videoId,
+        title: payload.title,
+        url: payload.url
       }).then(() => {
         commit('updateVideoTitle', payload)
         commit('showSnackbar', '変更を保存しました')
@@ -277,7 +274,7 @@ export default new Vuex.Store({
     },
     // ビデオの締切日の変更
     updateVideoDueDate({ commit }, payload) {
-      db.collection('videos').doc({ id: payload.id }).update({
+      db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({
         dueDate: payload.dueDate
       }).then(() => {
         commit('updateVideoDueDate', payload)
@@ -285,25 +282,23 @@ export default new Vuex.Store({
       })
     },
     // ビデオの取得
-    // TODO: ビデオを全部取得してしまっているので要修正
     // TODO: ソートするとデータ消える
-    getVideos({ state, commit }, id) {
-     db.collection('playlists').doc(id).collection('videos')
+    getVideos({ state, commit }, playlistId) {
+     db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
       .onSnapshot(snap => {
         let results = []
         snap.docs.forEach(doc => {
           // must wait for the server to create the timestamp & send it back
-          results.push({ ...doc.data(), id: doc.id })
-          console.log(results)
+          results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
         })
         state.videos = results
       })
-      commit('setVideos', state.videos)
+        commit('setVideos', state.videos)
     },
-    setVideos({ commit }, videos) {
-      db.collection('videos').set(videos)
-      commit('setVideos', videos)
-    }
+    // setVideos({ commit }, videos) {
+    //   db.collection('videos').set(videos)
+    //   commit('setVideos', videos)
+    // }
   },
   getters: {
     // 検索ワードをフィルターにかける(大文字/小文字無視できるように)

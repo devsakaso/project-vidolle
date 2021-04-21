@@ -49,7 +49,8 @@ export default {
   methods: {
     saveVideo() {
       let payload = {
-        id: this.video.id,
+        playlistId: this.video.playlistId,
+        videoId: this.video.videoId, //idは選択されたもの
         dueDate: this.date
       }
       this.$store.dispatch('updateVideoDueDate', payload)

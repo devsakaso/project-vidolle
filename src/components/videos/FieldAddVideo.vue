@@ -61,7 +61,7 @@
 
 <script>
 export default {
-  props: ['id'],
+  props: ['playlistId'],
   data() {
     return {
       newVideoTitle: '',
@@ -77,10 +77,11 @@ export default {
   methods: {
     addVideo() {
       if(!this.newVideoTitleInvalid) {
-        const playlistId = this.$props.id
+        const playlistId = this.$props.playlistId
+        const videoId = null
         const newVideoTitle = this.newVideoTitle
         const url = this.url
-        this.$store.dispatch('addVideo', {playlistId, newVideoTitle, url})
+        this.$store.dispatch('addVideo', {playlistId, videoId, newVideoTitle, url})
         this.newVideoTitle = ''
         this.url = ''
       }

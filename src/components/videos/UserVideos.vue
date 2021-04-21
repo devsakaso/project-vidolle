@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>id: {{id}}の動画一覧</h2>
+    <h2>id: {{playlistId}}の動画一覧</h2>
     <v-list
     flat
     class="pt-0"
@@ -12,8 +12,8 @@
       handle=".handle"
     >
       <UserVideo
-      v-for="video in videos"
-      :key="video.id"
+      v-for="(video, i) in videos"
+      :key="video[i]"
       :video="video"
       />
    </draggable>
@@ -26,7 +26,7 @@ import draggable from "vuedraggable";
 
 export default {
   name: 'UserVideos',
-  props: ['id'],
+  props: ['playlistId'],
   components: {
     UserVideo,
     draggable,

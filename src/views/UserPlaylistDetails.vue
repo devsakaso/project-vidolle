@@ -1,9 +1,9 @@
 <template>
   <div id="UserPlaylistDetails">
 
-    <FieldAddVideo :id="id"/>
+    <FieldAddVideo :playlistId="id"/>
     <!-- videoがあるとき -->
-    <UserVideos :id="id" v-if="$store.state.videos.length"/>
+    <UserVideos :playlistId="id" v-if="$store.state.videos.length"/>
 
     <!-- videoがないとき -->
     <NoVideos v-else/>

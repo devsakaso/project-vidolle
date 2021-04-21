@@ -10,7 +10,7 @@
         <v-list-item-action>
           <v-checkbox
             :input-value="video.done"
-            @click="$store.dispatch('doneVideo', video.id)"
+            @click="$store.dispatch('doneVideo', video)"
             
             ></v-checkbox>
         </v-list-item-action>
@@ -26,6 +26,13 @@
               title: {{video.title}}
               <br>
               url: {{video.url}}
+              <br>
+              videoId: {{video.videoId}}<br>
+              playlistId: {{ video.playlistId }}
+              <br>
+              done: {{video.done}}
+              <br>
+              timestamp: {{video.createdAt}}
             </v-list-item-title>
             <!-- </router-link> -->
         </v-list-item-content>

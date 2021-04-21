@@ -9,7 +9,7 @@
         <v-card-title class="headline">
           削除しますか？
         </v-card-title>
-        <v-card-text>タスク: {{video.title}} を削除してよいですか？</v-card-text>
+        <v-card-text>タイトル: {{video.title}} を削除してよいですか？</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <!-- DialogDelete.vueはTodo中でしか使わないのでstoreでDialogの状態管理をしない、
@@ -22,9 +22,11 @@
           >
             いいえ
           </v-btn>
-          <!-- deleteVideo()にvideo.idを渡すことで削除できる -->
+          <!-- playlistとvideoのidが必要なのでdeleteVideo()にvideoごと渡す -->
+          <!-- TODO: videoが後続にまだあるとき、dialogが閉じないので、clickイベントを@とv-onで複数セットしたがもっといい方法を検討する -->
           <v-btn
-            @click="$store.dispatch('deleteVideo', video.id)"
+            @click="$store.dispatch('deleteVideo', video)"
+            v-on:click="$emit('close')"
             color="primary"
             text
           >
