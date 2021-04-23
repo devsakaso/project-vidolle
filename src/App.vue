@@ -7,7 +7,7 @@
       dark
       src="appbar.jpg"
       prominent
-      :height="$route.path === '/' ? '150' : '100'"
+      :height="100"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -16,8 +16,8 @@
         ></v-img>
       </template>
 
-      <v-container class="pa-0 header-container">
-        <v-row>
+      <v-container class="py-0 header-container px-4">
+        <v-row class="px-4">
           <!-- ドロワーアイコン -->
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
@@ -34,8 +34,6 @@
           <Search/>
         </v-row>
 
-          <!-- プレイリスト追加のフィールド -->
-          <FieldAddPlaylist v-if="$route.path === '/'" />
       </v-container>
     </v-app-bar>
 
@@ -86,14 +84,12 @@
 </template>
 
 <script>
-import FieldAddPlaylist from '@/components/playlists/FieldAddPlaylist.vue'
 import Snackbar from '@/components/shared/Snackbar.vue'
 import Search from '@/components/tools/Search.vue'
 
 export default {
   name: 'App',
   components: {
-    FieldAddPlaylist,
     Snackbar,
     Search,
   },

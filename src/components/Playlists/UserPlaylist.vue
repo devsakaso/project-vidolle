@@ -21,12 +21,19 @@
           <router-link :to="{ name: 'UserPlaylistDetails', params: { id: playlist.id } }" @click.native="$store.dispatch('getVideos', playlist.id)">
           <v-list-item-title
           :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
-          @click="setActivePlaylist(playlist)"
+          class="text-h6"
           >
               {{playlist.title}}
+              
               <!-- , id: {{playlist.id}} -->
             </v-list-item-title>
             </router-link>
+             <v-list-item-subtitle
+              :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
+              class="grey--text"
+             >
+             {{playlist.description}}
+             </v-list-item-subtitle>
         </v-list-item-content>
 
         <!-- 締切日 -->

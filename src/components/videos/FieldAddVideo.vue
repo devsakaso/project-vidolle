@@ -92,7 +92,7 @@
                   <v-btn
                     class="mr-4 my-4"
                     color="red darken-1"
-                    @click="addVideoDialog = false"
+                    @click="cancelAddVideo"
                   >
                     キャンセル
                   </v-btn>
@@ -138,11 +138,13 @@ export default {
     }
   },
   computed: {
+    // 少なくともタイトルをいれないと登録できないようにする
     newVideoTitleInvalid() {
       return !this.newVideoTitle
     }
   },
   methods: {
+    // 動画の追加
     addVideo() {
       if(!this.newVideoTitleInvalid) {
         const playlistId = this.$props.playlistId
@@ -153,8 +155,13 @@ export default {
         this.newVideoTitle = ''
         this.newVideoUrl = ''
       }
+    },
+    // キャンセルボタン
+    cancelAddVideo() {
+      this.newVideoTitle = ''
+      this.newVideoUrl = ''
+      this.addVideoDialog = false
     }
   }
-
 }
 </script>

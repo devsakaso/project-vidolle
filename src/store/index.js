@@ -146,11 +146,12 @@ export default new Vuex.Store({
   },
   actions: {
     // プレイリストの追加
-    addPlaylist({ commit }, newPlaylistTitle) {
+    addPlaylist({ commit }, {playlistTitle, playlistDescription}) {
       let newPlaylist = {
         // id: Date.now(), //TODO: 要修正
         id: null,
-        title: newPlaylistTitle,
+        title: playlistTitle,
+        description: playlistDescription,
         done: false,
         dueDate: null,
         createdAt: timestamp(),
