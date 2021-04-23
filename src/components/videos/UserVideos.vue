@@ -3,9 +3,11 @@
     <v-container px-4>
       <v-row
         align="center"
-        justify="start">
+        justify="space-between"
+        >
+        
         <v-col cols="11">
-         <h2 class="primary--text">id: {{playlistId}}の動画一覧</h2>
+         <h2 class="primary--text">{{ playlistTitle}}の一覧</h2>
         </v-col>
         <v-col cols="1">
          <FieldAddVideo :playlistId="playlistId"/>
@@ -19,22 +21,17 @@
     >
 
     </v-list>
-    <draggable
-      v-model="videos"
-      handle=".handle"
-    >
+
       <UserVideo
       v-for="(video, i) in videos"
       :key="video[i]"
       :video="video"
       />
-   </draggable>
   </div>
 </template>
 
 <script>
 import UserVideo from '@/components/videos/UserVideo.vue'
-import draggable from "vuedraggable";
 import FieldAddVideo from '@/components/videos/FieldAddVideo.vue'
 
 export default {
@@ -43,7 +40,6 @@ export default {
   components: {
     UserVideo,
     FieldAddVideo,
-    draggable,
   },
   computed: {
     videos: {
@@ -53,6 +49,12 @@ export default {
       set(value) {
         this.$store.dispatch('setVideos', value)
       }
+    },
+    // プレイリストタイトルの取得
+    playlistTitle() {
+       const playlist = this.$store.state.playlists.filter(playlist => playlist.id === this.$props.playlistId)[0]
+      //  console.log(playlist);
+       return playlist.title
     }
   },
   

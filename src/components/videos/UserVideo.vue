@@ -1,58 +1,146 @@
 <template>
   <div>
-    <v-list-item
-    :class="{'blue lighten-5' : video.done}"
-    class="white"
+    <v-card
+    :class="{'primary lighten-3' : video.done}"
+    class="white mx-auto my-12"
     :ripple="false"
+    max-width="1200"
     >
-      <template v-slot:default>
-        <!-- チェックボックス -->
-        <v-list-item-action>
-          <v-checkbox
-            :input-value="video.done"
-            @click="$store.dispatch('doneVideo', video)"
-            
-            ></v-checkbox>
-        </v-list-item-action>
-
-        <!-- プレイリストタイトル -->
-        <v-list-item-content>
-          <!-- TODO: router-linkいれた、要確認 -->
-          <!-- <router-link :to="{ name: 'UserVideoDetails', params: { id: video.id } }"> -->
-          <v-list-item-title
-          :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.title}"
-          @click="setActiveVideo(video)"
+      <v-container>
+        <v-row no-gutters>
+          <v-col>
+            <!-- チェックボックス -->
+            <v-card-actions>
+              <v-checkbox
+                :input-value="video.done"
+                @click="$store.dispatch('doneVideo', video)"
+                
+                ></v-checkbox>
+            </v-card-actions>
+          </v-col>
+          <v-col
+            cols="12"
+            md="5"
           >
-              title: {{video.title}}
-              <br>
-              url: {{video.url}}
-              <br>
-              videoId: {{video.videoId}}<br>
-              playlistId: {{ video.playlistId }}
-              <br>
-              done: {{video.done}}
-              <br>
-              timestamp: {{video.createdAt}}
-            </v-list-item-title>
-            <!-- </router-link> -->
-        </v-list-item-content>
+            <iframe
+              width="100%"
+              min-width="315"
+              height="315"
+              :src="embedable(video.url)"
+              frameborder="0"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </v-col>
+          <v-col
+            cols="12"
+            md="5"
+          >
+            <!-- プレイリストタイトル -->
+            <!-- <v-card-content> -->
+              <!-- TODO: router-linkいれた、要確認 -->
+              <!-- <router-link :to="{ name: 'UserVideoDetails', params: { id: video.id } }"> -->
+              <v-card-title
+              :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.title}"
+              @click="setActiveVideo(video)"
+               class="primary--text"
+              >
+                  title: {{video.title}}
 
-        <!-- 締切日 -->
-        <!-- v-if="video.dueDate"というのは、nullの場合は表示したくないので。 -->
-        <v-list-item-action v-if="video.dueDate">
-          <v-list-item-action-text>
-            <v-icon small>mdi-calendar</v-icon>
-            {{ video.dueDate | formattedDate }}
-          </v-list-item-action-text>
-        </v-list-item-action>
+              </v-card-title>
+              <v-card-text>
+                  url: {{video.url}}
+                  <br>
+                  videoId: {{video.videoId}}<br>
+                  playlistId: {{ video.playlistId }}
+                  <br>
+                  done: {{video.done}}
+                  <br>
+                  timestamp: {{video.createdAt}}
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  color="primary"
+                  dark
+                >
+                  ノートをみる
+                  <v-icon dark>
+                    mdi-plus
+                  </v-icon>
+                </v-btn>
 
-          <!-- プレイリスト操作メニュー -->
-          <v-list-item-action>
-           <VideoMenu :video="video" />
-          </v-list-item-action>
+                <!-- 締切日 -->
+                  <v-chip
+                    v-if="video.dueDate"
+                    class="ma-2"
+                    color="primary"
+                    label
+                    text-color="white"
+                  >
+                    <v-icon left small>
+                      mdi-calendar
+                    </v-icon>
+                    {{ video.dueDate | formattedDate }}
+                  </v-chip>
 
-      </template>
-    </v-list-item>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  icon
+                  @click="show = !show"
+                >
+                  <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                </v-btn>
+              </v-card-actions>
+
+
+                <!-- </router-link> -->
+            <!-- </v-card-content> -->
+          </v-col>
+          <v-col>
+
+            <!-- プレイリスト操作メニュー -->
+            <v-card-actions>
+            <VideoMenu :video="video" />
+            </v-card-actions>
+          </v-col>
+          <v-col>
+
+          </v-col>
+        </v-row>
+          <!-- 補足情報のチップ -->
+          <v-expand-transition>
+            <div v-show="show">
+              <v-divider></v-divider>
+
+              <v-chip
+                class="ma-2"
+                color="primary"
+                label
+                small
+                text-color="white"
+              >
+                <v-icon left>
+                  mdi-format-title
+                </v-icon>
+                {{ video.title}}
+              </v-chip>
+
+              <v-chip
+                class="ma-2"
+                color="primary"
+                label
+                small
+                text-color="white"
+              >
+                <v-icon left>
+                  mdi-calendar-arrow-right
+                </v-icon>
+                
+              </v-chip>
+            </div>
+          </v-expand-transition>
+      </v-container>
+    </v-card>
   </div>
 </template>
 
@@ -71,6 +159,7 @@ export default {
   data() {
     return {
       activeVideo: '',
+      show: false,
     }
   },
   filters: {
@@ -79,6 +168,10 @@ export default {
     }
   },
   methods: {
+    embedable (url) {
+      // =以降がyoutubeの動画ID
+      return `https://www.youtube.com/embed/${url.split('=')[1]}`
+    },
     setActiveVideo(video) {
       this.activeVideo = video.title
       console.log(video.videoId)

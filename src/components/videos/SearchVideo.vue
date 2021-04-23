@@ -1,104 +1,132 @@
 <template>
-<div class="pa-4">
-    <v-text-field
-    v-model="keyword"
-    class="mt-1 expanding-search"
-    placeholder="検索キーワードを入力"
-    filled
-    clearable
-    prepend-inner-icon="mdi-magnify"
-  ></v-text-field>
-  <v-btn
-    elevation="2"
-    color="primary"
-    medium
-    @click="searchVideo">
-    検索する
-    </v-btn>
+  <div class="pa-4">
+      <!-- 検索フィールド -->
+      <v-text-field
+      v-model="keyword"
+      class="mt-1 expanding-search"
+      placeholder="検索キーワードを入力"
+      filled
+      clearable
+      prepend-inner-icon="mdi-magnify"
+    ></v-text-field>
+    <!-- 検索開始のボタン -->
+    <v-btn
+      elevation="2"
+      color="primary"
+      medium
+      @click="searchVideo">
+      検索する
+      </v-btn>
 
-    <!-- v-show="results" -->
-  <v-card
-    v-for="video in results" v-bind:key="video.id.videoId"
-    class="mx-auto my-12"
-    max-width="1200"
-  >
-  <v-container>
-    <v-row no-gutters>
-      <v-col
-        cols="12"
-        md="4"
-      >
-        <a
-          :href="'https://www.youtube.com/watch?v=' + video.id.videoId"
-          target="_blank"
-          rel="noopener noreferrer">
-          <v-img
-            max-height="250"
-            :src="video.snippet.thumbnails.medium.url"
-          ></v-img>
-        </a>
-      </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
-      <v-card-title>{{ video.snippet.title }}</v-card-title>
+    <!-- 検索結果 -->
+    <v-card
+      v-for="video in results" v-bind:key="video.id.videoId"
+      class="mx-auto my-12"
+      max-width="1200"
+    >
+      <v-container>
+        <v-row no-gutters>
+          <v-col
+            cols="12"
+            md="5"
+          >
+            <iframe
+              width="100%"
+              min-width="315"
+              height="315"
+              :src="`https://www.youtube.com/embed/${video.id.videoId}`"
+              frameborder="0"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-card-title class="primary--text">{{ video.snippet.title }}</v-card-title>
+            <v-card-text>
+              {{ video.snippet.description}}
+            </v-card-text>
+          </v-col>
+        </v-row>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              dark
+              @click="addVideo(video)"
+            >
+              保存する
+              <v-icon dark>
+                mdi-plus
+              </v-icon>
+            </v-btn>
 
-      <v-card-text>
-        {{ video.snippet.description}}
-      </v-card-text>
-      </v-col>
-    </v-row>
-      <v-card-actions>
-        <v-btn
-          color="primary"
-          dark
-          @click="addVideo(video)"
-        >
-          保存する
-          <v-icon dark>
-            mdi-plus
-          </v-icon>
-        </v-btn>
+            <v-spacer></v-spacer>
 
-        <v-spacer></v-spacer>
+            <v-btn
+              icon
+              @click="show = !show"
+            >
+              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+          </v-card-actions>
 
-        <v-btn
-          icon
-          @click="show = !show"
-        >
-          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
+          <!-- 補足情報のチップ -->
           <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
+            <div v-show="show">
+              <v-divider></v-divider>
 
-          <v-card-text>
-            channelTitle: {{ video.snippet.channelTitle}}
-          </v-card-text>
-          <v-card-text>
-            channelId: {{ video.snippet.channelId}}
-          </v-card-text>
-          <v-card-text>
-            publishTime: {{ video.snippet.publishTime}}
-          </v-card-text>
-          <v-text-field :value="video.snippet.title">
-             {{ video.snippet.title }}
-          </v-text-field>
-          <v-text-field :value="video.id.videoId">
-             https://www.youtube.com/watch?v={{video.id.videoId}}
-          </v-text-field>
-        </div>
-      </v-expand-transition>
-  </v-container>
-  </v-card>
+              <v-chip
+                class="ma-2"
+                color="primary"
+                label
+                small
+                text-color="white"
+              >
+                <v-icon left>
+                  mdi-format-title
+                </v-icon>
+                {{ video.snippet.channelTitle}}
+              </v-chip>
 
-</div>
+              <v-chip
+                class="ma-2"
+                color="primary"
+                label
+                small
+                text-color="white"
+              >
+                <v-icon left>
+                  mdi-calendar-arrow-right
+                </v-icon>
+                {{ video.snippet.publishTime | formattedDate }}
+              </v-chip>
+
+              <!-- 情報取得用フィールド(タイトル) -->
+              <v-text-field
+                label="タイトル"
+                class="d-none"
+                :value="video.snippet.title">
+                {{ video.snippet.title }}
+              </v-text-field>
+              <!-- 情報取得用フィールド(URL) -->
+              <v-text-field
+                label="動画ID"
+                class="d-none"
+                :value="video.id.videoId">
+                https://www.youtube.com/watch?v={{video.id.videoId}}
+              </v-text-field>
+            </div>
+          </v-expand-transition>
+      </v-container>
+    </v-card>
+
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { format } from 'date-fns'
 
 export default {
   name: "SearchVideo",
@@ -118,6 +146,11 @@ export default {
       show: false,
       newVideoTitle: '',
       newVideoUrl: '',
+    }
+  },
+  filters: {
+    formattedDate(value) {
+      return format(new Date(value), 'yyyy/M/dd')
     }
   },
   methods: {

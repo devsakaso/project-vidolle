@@ -23,7 +23,8 @@
           :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
           @click="setActivePlaylist(playlist)"
           >
-              {{playlist.title}}, id: {{playlist.id}}
+              {{playlist.title}}
+              <!-- , id: {{playlist.id}} -->
             </v-list-item-title>
             </router-link>
         </v-list-item-content>
@@ -84,7 +85,7 @@ export default {
   methods: {
     setActivePlaylist(playlist) {
       this.activePlaylist = playlist.title
-      console.log(playlist.id)
+      return playlist.title
     }
   }
 }

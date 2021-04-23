@@ -5,7 +5,6 @@
     <v-dialog
       v-model="addVideoDialog"
       max-width="1200px"
-      persistent
     >
       <!-- ダイアログを開くボタン -->
       <template v-slot:activator="{ on, attrs }">

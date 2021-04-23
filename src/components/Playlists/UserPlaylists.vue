@@ -2,33 +2,28 @@
   <div>
     <h2 class="primary--text my-4">すべてのプレイリスト</h2>
     <v-list
-    flat
-    class="pt-0"
+    rounded
+    class="pt-0 mx-auto"
+    max-width="1200px"
+    two-line
     >
 
-    </v-list>
-    <draggable
-      v-model="playlists"
-      handle=".handle"
-    >
       <UserPlaylist
       v-for="playlist in playlists"
       :key="playlist.id"
       :playlist="playlist"
       />
-   </draggable>
+    </v-list>
   </div>
 </template>
 
 <script>
 import UserPlaylist from '@/components/playlists/UserPlaylist.vue'
-import draggable from "vuedraggable";
 
 export default {
   name: 'UserPlaylists',
     components: {
       UserPlaylist,
-      draggable,
   },
   computed: {
     playlists: {
