@@ -12,9 +12,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // プレイリスト
+    playlists: [],
     title: '',
     url: '',
     videos: [],
+    noteTitle: '',
+    noteCOntent:'',
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // 検索
@@ -26,27 +30,6 @@ export default new Vuex.Store({
     },
     // ソート
     sorting: false,
-    // プレイリスト
-    playlists: [
-      //   {
-      //     id: 1,
-      //     title: 'Vue2のプレイリスト',
-      //     done: false,
-      //     dueDate: '2021-04-25'
-      //   },
-      //   {
-      //     id: 2,
-      //     title: 'Vue3のプレイリスト',
-      //     done: false,
-      //     dueDate: '2021-05-20'
-      //   },
-      //   {
-      //     id: 3,
-      //     title: 'Node.jsのプレイリスト',
-      //     done: false,
-      //     dueDate: null
-      //   },
-      ]
   },
   mutations: {
     // プレイリストの追加
@@ -114,7 +97,10 @@ export default new Vuex.Store({
     //   state.videos = videos.filter(video => video.playlistId === id)
     // },
     // 
-    // 
+    // ノートの追加
+    addNote(state, newNote) {
+      state.videos.push(newNote)
+    },
     // 
     // 
     // スナックバー
@@ -228,8 +214,10 @@ export default new Vuex.Store({
     // 
     // 
     // ビデオの追加
-    addVideo({ commit }, {playlistId, videoId, newVideoTitle, url}) {
+    addVideo({ commit }, {youtubeVideoId, playlistId, videoId, newVideoTitle, url}) {
+
       let newVideo = {
+        youtubeVideoId: youtubeVideoId,
         videoId: videoId,
         playlistId: playlistId,
         title: newVideoTitle,
@@ -238,26 +226,11 @@ export default new Vuex.Store({
         dueDate: null,
         createdAt: timestamp(),
       }
+
       db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(doc => {
         newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
         commit('addVideo', newVideo)
         commit('showSnackbar', '追加しました')
-      })
-    },
-    // YouTube検索からビデオの追加
-    addVideoFromSearch({ commit }, {playlistId, videoId, newVideoTitle, url}) {
-      let newVideo = {
-        videoId: videoId,
-        playlistId: playlistId,
-        title: newVideoTitle,
-        url: url,
-        done: false,
-        dueDate: null,
-        createdAt: timestamp(),
-      }
-      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(doc => {
-        newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
-        commit('addVideo', newVideo)
       })
     },
     // ビデオの完了
@@ -278,12 +251,11 @@ export default new Vuex.Store({
 
       })
     },
-    // ビデオタイトルとurlの更新
+    // ビデオタイトルの更新
     updateVideoTitle({ commit }, payload) {
       db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({
         videoId: payload.videoId,
         title: payload.title,
-        url: payload.url
       }).then(() => {
         commit('updateVideoTitle', payload)
         commit('showSnackbar', '変更を保存しました')
@@ -316,6 +288,19 @@ export default new Vuex.Store({
     //   db.collection('videos').set(videos)
     //   commit('setVideos', videos)
     // }
+
+    // ノートの追加
+    addNote({ commit }, {playlistId, videoId, noteTitle, noteContent}) {
+      let newNote = {
+        videoId: videoId,
+        noteTitle: noteTitle,
+        noteContent: noteContent,
+      }
+      db.collection('playlists').doc(playlistId).collection('videos').doc(videoId).update(newNote).then(() => {
+        commit('addNote', newNote)
+        commit('showSnackbar', '追加しました')
+      })
+    },
   },
   getters: {
     // 検索ワードをフィルターにかける(大文字/小文字無視できるように)

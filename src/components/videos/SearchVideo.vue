@@ -146,6 +146,7 @@ export default {
       show: false,
       newVideoTitle: '',
       newVideoUrl: '',
+      youtubeVideoId: null,
     }
   },
   filters: {
@@ -170,13 +171,13 @@ export default {
         })
     },
     addVideo(video) {
-      console.log(video)
+        const youtubeVideoId = video.id.videoId
         const playlistId = this.$props.playlistId
         const videoId = null
         const newVideoTitle = video.snippet.title
         const url = 'https://www.youtube.com/watch?v=' + video.id.videoId
-        console.log(playlistId, "id以外:", videoId, newVideoTitle, url,this.newVideoTitle,this.newVideoUrl);
-        this.$store.dispatch('addVideoFromSearch', {playlistId, videoId, newVideoTitle, url})
+        
+        this.$store.dispatch('addVideo', {youtubeVideoId, playlistId, videoId, newVideoTitle, url})
         this.newVideoTitle = ''
         this.newVideoUrl = ''
     }

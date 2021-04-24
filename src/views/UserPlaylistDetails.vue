@@ -20,7 +20,7 @@ import NoVideos from '@/components/videos/NoVideos.vue'
 import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 
 export default {
-  name: 'UserPlaylistDetails',
+  name: 'playlist',
   props:['id'],
   components: {
     UserVideos,

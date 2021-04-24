@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: '/playlists/:id',
-    name: 'UserPlaylistDetails',
+    name: 'playlist',
     component: UserPlaylistDetails,
     props: true
   },

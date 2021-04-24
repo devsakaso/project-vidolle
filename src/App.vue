@@ -7,7 +7,7 @@
       dark
       src="appbar.jpg"
       prominent
-      :height="100"
+      height="100"
     >
       <template v-slot:img="{ props }">
         <v-img

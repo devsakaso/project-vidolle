@@ -18,7 +18,7 @@
         <!-- プレイリストタイトル -->
         <v-list-item-content>
           <!-- TODO: router-linkいれた、要確認 -->
-          <router-link :to="{ name: 'UserPlaylistDetails', params: { id: playlist.id } }" @click.native="$store.dispatch('getVideos', playlist.id)">
+          <router-link :to="{ name: 'playlist', params: { id: playlist.id } }" @click.native="$store.dispatch('getVideos', playlist.id)">
           <v-list-item-title
           :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
           class="text-h6"

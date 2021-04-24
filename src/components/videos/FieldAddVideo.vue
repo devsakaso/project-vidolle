@@ -135,6 +135,7 @@ export default {
       newVideoUrl: '',
       addVideoDialog: false,
       tabs: null,
+      youtubeVideoId: null,
     }
   },
   computed: {
@@ -146,12 +147,22 @@ export default {
   methods: {
     // 動画の追加
     addVideo() {
+      if(this.newVideoUrl.startsWith('https://youtu.be/')) {
+       this.youtubeVideoId = this.newVideoUrl.split('youtu.be/')[1].substring(0,11)
+      } else if(this.newVideoUrl.startsWith('https://www.youtube.com/watch?v=')) {
+       this.youtubeVideoId = this.newVideoUrl.split('v=')[1].substring(0,11)
+      } else {
+        this.youtubeVideoId = null
+      }
+
       if(!this.newVideoTitleInvalid) {
+        const youtubeVideoId = this.youtubeVideoId
         const playlistId = this.$props.playlistId
         const videoId = null
         const newVideoTitle = this.newVideoTitle
-        const url = this.newVideoUrl
-        this.$store.dispatch('addVideo', {playlistId, videoId, newVideoTitle, url})
+        const url = `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
+
+        this.$store.dispatch('addVideo', {youtubeVideoId, playlistId, videoId, newVideoTitle, url})
         this.newVideoTitle = ''
         this.newVideoUrl = ''
       }

@@ -14,11 +14,7 @@
             <v-text-field
             v-model="title"
             text
-          ></v-text-field>
-            <v-text-field
-            v-model="url"
-            text
-          ></v-text-field>
+            ></v-text-field>
           </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -50,28 +46,25 @@ export default {
   data() {
     return {
       title: null,
-      url: null,
     }
   },
   computed: {
     videoTitleInvalid() {
-      // タイトルが空白||urlが空白 || タイトルとurlのどちらかが同じ（編集されていない）場合
-      return !this.title || !this.url || this.title === this.video.title && this.url === this.video.url
+      // タイトルが空白 || タイトルが同じ（編集されていない）場合
+      return !this.title || this.title === this.video.title
     }
   },
-  // mount時にタイトルをvideoTitle,urlに格納することで表示できるようになる
+  // mount時にタイトルをvideoTitleに格納することで表示できるようになる
   mounted() {
     this.title = this.video.title
-    this.url = this.video.url
   },
   methods: {
     saveVideo() {
-      if(!this.videoTitleInvalid) { //this忘れがち
+      if(!this.videoTitleInvalid) {
           let payload = {
           playlistId: this.video.playlistId,
           videoId: this.video.videoId, //idは選択されたもの
           title: this.title, //titleは入力されたもの
-          url: this.url //urlは入力されたもの
         }
         console.log(payload);
         this.$store.dispatch('updateVideoTitle', payload)
