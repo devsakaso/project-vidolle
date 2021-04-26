@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-    v-if="video.title"
+    v-if="video.videoTitle"
     :class="{'primary lighten-3' : video.done}"
     class="white mx-auto my-12"
     :ripple="false"
@@ -36,11 +36,11 @@
           >
             <!-- 動画リスト -->
               <v-card-title
-              :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.title}"
+              :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.videoTitle}"
               @click="setActiveVideo(video)"
                class="primary--text"
               >
-                  title: {{video.title}}
+                  title: {{video.videoTitle}}
 
               </v-card-title>
               <v-card-text>
@@ -58,7 +58,7 @@
                   <v-icon left>
                     mdi-format-title
                   </v-icon>
-                  {{ video.title}}
+                  {{ video.videoTitle}}
                 </v-chip>
 
                 <v-chip
@@ -170,7 +170,7 @@ export default {
   },
     methods: {
     setActiveVideo(video) {
-      this.activeVideo = video.title
+      this.activeVideo = video.videoTitle
       console.log(video.videoId)
     }
   }

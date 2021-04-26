@@ -7,7 +7,8 @@
         >
         
         <v-col cols="11">
-         <h2 class="primary--text">{{ playlistTitle}}の一覧</h2>
+         <h2 class="primary--text">動画一覧</h2>
+         <!-- <h2 class="primary--text">{{ playlistId}}の一覧</h2> -->
         </v-col>
         <v-col cols="1">
          <FieldAddVideo :playlistId="playlistId"/>
@@ -21,7 +22,6 @@
     >
 
     </v-list>
-
       <UserVideo
       v-for="(video, i) in videos"
       :key="video[i]"
@@ -39,7 +39,7 @@ export default {
   props: ['playlistId'],
   components: {
     UserVideo,
-    FieldAddVideo,
+    FieldAddVideo,  
   },
   computed: {
     videos: {
@@ -49,15 +49,8 @@ export default {
       set(value) {
         this.$store.dispatch('setVideos', value)
       }
-    },
-    // プレイリストタイトルの取得
-    playlistTitle() {
-       const playlist = this.$store.state.playlists.filter(playlist => playlist.id === this.$props.playlistId)[0]
-      //  console.log(playlist);
-       return playlist.title
     }
-  },
-  
+  }
 }
 </script>
 

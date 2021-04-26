@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 // firebase初期化
 firebase.initializeApp(firebaseConfig)
-// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 // サービス初期化
 const projectAuth = firebase.auth()

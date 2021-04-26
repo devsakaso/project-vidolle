@@ -17,13 +17,12 @@ export default new Vuex.Store({
     title: '',
     url: '',
     videos: [],
-    videoTitle: '',
     noteTitle: '',
     noteCOntent:'',
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // TODO: いるかどうか判断 ログイン/サインアップ
-    user: null,
+    user: [],
     isSignIn: false,
     // 検索
     search: null,
@@ -40,9 +39,9 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user; //firebaseが返したユーザー情報
     },
-    // isSignIn(state, isSignIn) {
-    //     state.isSignIn = isSignIn; //ログインしてるかどうか true or false
-    // },
+    isSignIn(state, isSignIn) {
+        state.isSignIn = isSignIn; //ログインしてるかどうか true or false
+    },
     // プレイリストの追加
     addPlaylist(state, newPlaylist) {
       state.playlists.push(newPlaylist)
@@ -66,7 +65,7 @@ export default new Vuex.Store({
       let playlist = state.playlists.filter(playlist => playlist.id === payload.id)[0]
       playlist.dueDate = payload.dueDate
     },
-    // プレイリストをセット
+    // プレイリスト並び替え
     setPlaylists(state, playlists) {
       state.playlists = playlists
     },
@@ -80,9 +79,9 @@ export default new Vuex.Store({
     },
     // ビデオの完了・未完了
     doneVideo(state, payload) {
-      // state.videos.filter(video => video.videoId === payload.videoId)
-      let video = state.videos.filter(video => video.videoId === payload.videoId)
-      video.done = !video.done
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.done = !video.done
     },
     // ビデオの削除
     deleteVideo(state, payload) {
@@ -90,17 +89,17 @@ export default new Vuex.Store({
     },
     // ビデオタイトルの更新
     updateVideoTitle(state, payload) {
-      // state.videos.filter(video => video.videoId === payload.videoId)
-      let video = state.videos.filter(video => video.videoId === payload.videoId)
-      video.title = payload.title
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.title = payload.title
     },
     // ビデオ締切日の更新
     updateVideoDueDate(state, payload) {
-      // state.videos.filter(video => video.videoId === payload.videoId)
-      let video = state.videos.filter(video => video.videoId === payload.videoId)
-      video.dueDate = payload.dueDate
+      state.videos.filter(video => video.videoId === payload.videoId)
+      // let video = state.videos.filter(video => video.videoId === payload.videoId)
+      // video.dueDate = payload.dueDate
     },
-    // ビデオをセット
+    // ビデオの並び替え
     setVideos(state, videos) {
       state.videos = videos
     },
@@ -146,13 +145,12 @@ export default new Vuex.Store({
     addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {
       let newPlaylist = {
         userId: state.user,
-        // id: Date.now(), //TODO: 要修正
-        id: null,
+        id: Date.now(), //TODO: 要修正
         title: playlistTitle,
         description: playlistDescription,
         done: false,
         dueDate: null,
-        createdAt: timestamp()
+        createdAt: timestamp(),
       }
       db.collection('playlists').add({
         ...newPlaylist
@@ -212,8 +210,7 @@ export default new Vuex.Store({
     // getPlaylists({state, commit}, userId) {
     getPlaylists({commit}, userId) {
       let results = []
-      db.collection('playlists').where('userId', '==', userId)
-      .get()
+      db.collection('playlists').where('userId', '==', userId).get()
       .then(
         snap => {
           if(!snap.size) {
@@ -224,7 +221,7 @@ export default new Vuex.Store({
                 results.push({...doc.data(), id: doc.id })
             })
           }
-        },
+        }
       )
       .catch(err => console.log(err.message))
       
@@ -247,15 +244,14 @@ export default new Vuex.Store({
         youtubeVideoId: youtubeVideoId,
         videoId: videoId,
         playlistId: playlistId,
-        videoTitle: newVideoTitle,
+        title: newVideoTitle,
         url: url,
         done: false,
         dueDate: null,
         createdAt: timestamp(),
       }
 
-      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo)
-      .then(doc => {
+      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo).then(doc => {
         newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
         commit('addVideo', newVideo)
         commit('showSnackbar', '追加しました')
@@ -268,7 +264,7 @@ export default new Vuex.Store({
       })
       .then(() => {
         commit('doneVideo', payload)
-        console.log(payload.done, payload.videoTitle); //TODO: なぜか逆の結果が出力される
+        console.log(payload.done, payload.title); //TODO: なぜか逆の結果が出力される
       })
     },
     // ビデオの削除
@@ -283,7 +279,7 @@ export default new Vuex.Store({
     updateVideoTitle({ commit }, payload) {
       db.collection('playlists').doc(payload.playlistId).collection('videos').doc(payload.videoId).update({
         videoId: payload.videoId,
-        videoTitle: payload.videoTitle,
+        title: payload.title,
       }).then(() => {
         commit('updateVideoTitle', payload)
         commit('showSnackbar', '変更を保存しました')
@@ -299,37 +295,19 @@ export default new Vuex.Store({
       })
     },
     // ビデオの取得
-    // getVideos({ commit }, playlistId) {
-    //  let results = []
-    //  db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
-    //   .get()
-    //   .then(
-    //     snap => {
-    //       if(!snap.size) {
-    //         console.log('動画がありません, snap.size: ', snap.size)
-    //       }
-    //       if(snap.size) {
-    //         snap.forEach(doc => {
-    //           results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
-    //         })
-    //       }
-    //     })
-    //   .then(() => commit('setVideos', results))
-    // },
-
+    // TODO: ソートするとデータ消える
     getVideos({ state, commit }, playlistId) {
-      db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
-       .onSnapshot(snap => {
-         let results = []
-         snap.docs.forEach(doc => {
-           // must wait for the server to create the timestamp & send it back
-           results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
-         })
-         state.videos = results
-       })
-         commit('setVideos', state.videos)
-     },
-
+     db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
+      .onSnapshot(snap => {
+        let results = []
+        snap.docs.forEach(doc => {
+          // must wait for the server to create the timestamp & send it back
+          results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
+        })
+        state.videos = results
+      })
+        commit('setVideos', state.videos)
+    },
     // setVideos({ commit }, videos) {
     //   db.collection('videos').set(videos)
     //   commit('setVideos', videos)
@@ -363,15 +341,15 @@ export default new Vuex.Store({
         return state.videos
       }
       return state.videos.filter(video => {
-       return video.videoTitle.toLowerCase().includes(state.search.toLowerCase())
+       return video.title.toLowerCase().includes(state.search.toLowerCase())
       })
     },
     // サインアップ
     user(state) {
       return state.user;
     },
-    // isSignIn(state) {
-    //   return state.isSignIn;
-    // }
+    isSignIn(state) {
+      return state.isSignIn;
+    }
   }
 })

@@ -9,7 +9,7 @@
         <v-card-title class="headline">
           削除しますか？
         </v-card-title>
-        <v-card-text>タイトル: {{video.title}} を削除してよいですか？</v-card-text>
+        <v-card-text>タイトル: {{video.videoTitle}} を削除してよいですか？</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <!-- DialogDelete.vueはTodo中でしか使わないのでstoreでDialogの状態管理をしない、

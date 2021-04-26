@@ -28,7 +28,7 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>{{video.title}}</v-toolbar-title>
+          <v-toolbar-title>{{video.videoTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn

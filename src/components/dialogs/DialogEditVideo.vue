@@ -12,7 +12,7 @@
           <v-card-text>
             保存しますか？
             <v-text-field
-            v-model="title"
+            v-model="videoTitle"
             text
             ></v-text-field>
           </v-card-text>
@@ -45,18 +45,18 @@ export default {
   props: ['video'],
   data() {
     return {
-      title: null,
+      videoTitle: null,
     }
   },
   computed: {
     videoTitleInvalid() {
       // タイトルが空白 || タイトルが同じ（編集されていない）場合
-      return !this.title || this.title === this.video.title
+      return !this.videoTitle || this.videoTitle === this.video.videoTitle
     }
   },
   // mount時にタイトルをvideoTitleに格納することで表示できるようになる
   mounted() {
-    this.title = this.video.title
+    this.videoTitle = this.video.videoTitle
   },
   methods: {
     saveVideo() {
@@ -64,7 +64,7 @@ export default {
           let payload = {
           playlistId: this.video.playlistId,
           videoId: this.video.videoId, //idは選択されたもの
-          title: this.title, //titleは入力されたもの
+          videoTitle: this.videoTitle, //titleは入力されたもの
         }
         console.log(payload);
         this.$store.dispatch('updateVideoTitle', payload)
