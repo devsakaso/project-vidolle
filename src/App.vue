@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.state.playlists = [] //他の人に表示されないように初期値に戻しておく
+      this.$store.state.playlists = [] //他の人に表示されないように念の為初期値に戻す
       projectAuth.signOut()
       .then(() => {
         this.$router.push({ name: 'Login' })

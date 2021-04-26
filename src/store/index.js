@@ -158,22 +158,6 @@ export default new Vuex.Store({
       commit('addPlaylist', newPlaylist)
       commit('showSnackbar', '追加しました')
     },
-    // addPlaylist({ commit }, {playlistTitle, playlistDescription}) {
-    //   let newPlaylist = {
-    //     // id: Date.now(), //TODO: 要修正
-    //     id: null,
-    //     title: playlistTitle,
-    //     description: playlistDescription,
-    //     done: false,
-    //     dueDate: null,
-    //     createdAt: timestamp(),
-    //   }
-    //   db.collection('playlists').add(newPlaylist).then(doc => {
-    //     newPlaylist.id = doc.id //docのidを追加
-    //     commit('addPlaylist', newPlaylist)
-    //     commit('showSnackbar', '追加しました')
-    //   })
-    // },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
       // const ClickedPlaylist = db.collection('playlists').where('userId' == state.user).doc(id)
