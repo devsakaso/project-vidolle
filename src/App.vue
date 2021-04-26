@@ -24,7 +24,12 @@
 
         <!-- タイトル -->
           <v-app-bar-title class="text-h4">
+            <router-link
+            :to="{ name: 'Playlists' }"
+            class="text-decoration-none primary--text"
+            >
             {{ $store.state.appTitle }}
+            </router-link>
           </v-app-bar-title>
 
           <v-spacer></v-spacer>
@@ -52,6 +57,9 @@
         <v-list-item-content>
           <v-list-item-title>John Leider</v-list-item-title>
         </v-list-item-content>
+        <v-btn
+        @click="logout"
+        >ログアウト</v-btn>
       </v-list-item>
 
       <v-divider></v-divider>
@@ -86,6 +94,7 @@
 <script>
 import Snackbar from '@/components/shared/Snackbar.vue'
 import Search from '@/components/tools/Search.vue'
+import { projectAuth } from '@/firebase/config'
 
 export default {
   name: 'App',
@@ -97,16 +106,24 @@ export default {
     return {
       drawer: false,
       items: [
-        { title: 'Playlists', icon: 'mdi-view-dashboard', to: '/' },
-        { title: 'About', icon: 'mdi-forum', to: '/about' },
+        { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
+        { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
+        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Login'} },
+        { title: 'サインアップ', icon: 'mdi-forum', to: {name: 'Signup'} },
       ],
     }
   },
-  mounted() {
-    this.$store.dispatch('getPlaylists')
-    // this.$store.dispatch('getVideos')
+  methods: {
+    logout() {
+      this.$store.state.playlists = [] //他の人に表示されないように初期値に戻しておく
+      projectAuth.signOut()
+      .then(() => {
+        this.$router.push({ name: 'Login' })
+        console.log('ログアウトしました')
+      })
+    }
   }
-};
+}
 </script>
 
 <style lang="sass">

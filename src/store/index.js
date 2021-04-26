@@ -21,6 +21,9 @@ export default new Vuex.Store({
     noteCOntent:'',
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
+    // TODO: いるかどうか判断 ログイン/サインアップ
+    user: [],
+    isSignIn: false,
     // 検索
     search: null,
     // スナックバー
@@ -32,6 +35,13 @@ export default new Vuex.Store({
     sorting: false,
   },
   mutations: {
+    // サインイン
+    setUser(state, user) {
+      state.user = user; //firebaseが返したユーザー情報
+    },
+    isSignIn(state, isSignIn) {
+        state.isSignIn = isSignIn; //ログインしてるかどうか true or false
+    },
     // プレイリストの追加
     addPlaylist(state, newPlaylist) {
       state.playlists.push(newPlaylist)
@@ -132,24 +142,41 @@ export default new Vuex.Store({
   },
   actions: {
     // プレイリストの追加
-    addPlaylist({ commit }, {playlistTitle, playlistDescription}) {
+    addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {
       let newPlaylist = {
-        // id: Date.now(), //TODO: 要修正
-        id: null,
+        userId: state.user,
+        id: Date.now(), //TODO: 要修正
         title: playlistTitle,
         description: playlistDescription,
         done: false,
         dueDate: null,
         createdAt: timestamp(),
       }
-      db.collection('playlists').add(newPlaylist).then(doc => {
-        newPlaylist.id = doc.id //docのidを追加
-        commit('addPlaylist', newPlaylist)
-        commit('showSnackbar', '追加しました')
+      db.collection('playlists').add({
+        ...newPlaylist
       })
+      commit('addPlaylist', newPlaylist)
+      commit('showSnackbar', '追加しました')
     },
+    // addPlaylist({ commit }, {playlistTitle, playlistDescription}) {
+    //   let newPlaylist = {
+    //     // id: Date.now(), //TODO: 要修正
+    //     id: null,
+    //     title: playlistTitle,
+    //     description: playlistDescription,
+    //     done: false,
+    //     dueDate: null,
+    //     createdAt: timestamp(),
+    //   }
+    //   db.collection('playlists').add(newPlaylist).then(doc => {
+    //     newPlaylist.id = doc.id //docのidを追加
+    //     commit('addPlaylist', newPlaylist)
+    //     commit('showSnackbar', '追加しました')
+    //   })
+    // },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
+      // const ClickedPlaylist = db.collection('playlists').where('userId' == state.user).doc(id)
       const ClickedPlaylist = db.collection('playlists').doc(id)
       ClickedPlaylist.collection('videos').get().then(snapshot => {
         // videosが空のときだけ削除
@@ -196,13 +223,26 @@ export default new Vuex.Store({
       })
     },
     // プレイリストの取得
-    getPlaylists({state, commit}) {
-      db.collection('playlists').orderBy('createdAt').get().then(playlists => {
-        playlists.docs.forEach(doc => {
-        state.playlists.push({...doc.data(), id: doc.id})
-      })
-    })
-      commit('setPlaylists', state.playlists)
+    // getPlaylists({state, commit}, userId) {
+    getPlaylists({commit}, userId) {
+      let results = []
+      db.collection('playlists').where('userId', '==', userId).get()
+      .then(
+        snap => {
+          if(!snap.size) {
+            console.log('プレイリストがありません, snap.size: ', snap.size)
+          }
+          if(snap.size) {
+            snap.forEach(doc => {
+                results.push({...doc.data(), id: doc.id })
+            })
+          }
+        }
+      )
+      .catch(err => console.log(err.message))
+      
+      // commit('setPlaylists', state.playlists)
+      commit('setPlaylists', results)
     },
     // プレイリストの並び替えのset
     // setPlaylists({ commit }, playlists) {
@@ -320,5 +360,12 @@ export default new Vuex.Store({
        return video.title.toLowerCase().includes(state.search.toLowerCase())
       })
     },
+    // サインアップ
+    user(state) {
+      return state.user;
+    },
+    isSignIn(state) {
+      return state.isSignIn;
+    }
   }
 })

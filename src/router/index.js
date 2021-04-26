@@ -2,17 +2,44 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Playlists from '../views/Playlists.vue'
 import UserPlaylistDetails from '../views/UserPlaylistDetails.vue'
+import Login from '../views/auth/Login.vue'
+import Signup from '../views/auth/Signup.vue'
 
 // VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
 import goTo from 'vuetify/es5/services/goto'
 
+// route guard
+import { projectAuth } from '../firebase/config'
+// import Firebase from '../firebase/config'
+
 Vue.use(VueRouter)
+
+const requireAuth = (to, from, next) => {
+  let user = projectAuth.currentUser
+  if (!user) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
+}
 
 const routes = [
   {
     path: '/',
     name: 'Playlists',
-    component: Playlists
+    component: Playlists,
+    beforeEnter: requireAuth
+    // meta: {requiresAuth: true}
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup
   },
   {
     path: '/about',
@@ -26,7 +53,10 @@ const routes = [
     path: '/playlists/:id',
     name: 'playlist',
     component: UserPlaylistDetails,
-    props: true
+    props: true,
+    beforeEnter: requireAuth
+    // meta: {requiresAuth: true}
+
   },
 ]
 
@@ -38,9 +68,37 @@ const router = new VueRouter({
 
 // routerのnameをタイトルの後に続くように設定
 router.beforeEach((to, from, next) => {
+//   if(to.matched.some(rec => rec.meta.requiresAuth)) {
+//     let user = projectAuth.currentUser
+//     if(!user) {
+//       next({ name: 'Login' })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
   document.title = `${process.env.VUE_APP_TITLE} - ${to.name}`
   next()
 })
+
+
+// router.beforeEach((to, from, next) => {
+//   Firebase.onAuth();
+//   let currentUserStatus = this.$store.getters["isSignIn"]
+//   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+//   if (!requiresAuth ) {
+//     next()
+//   } else if (requiresAuth && !currentUserStatus) {
+//     next('/signup');
+//   } else {
+//     next();
+//   }
+
+// })
+
+
+
 
 // 0はトップなのでtoTo(0)とする
 router.afterEach(() => {
