@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Playlists from '../views/Playlists.vue'
 import UserPlaylistDetails from '../views/UserPlaylistDetails.vue'
-import Login from '../views/auth/Login.vue'
-import Signup from '../views/auth/Signup.vue'
+import Form from '../views/auth/Form.vue'
 
 // VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
 import goTo from 'vuetify/es5/services/goto'
@@ -17,7 +16,8 @@ Vue.use(VueRouter)
 const requireAuth = (to, from, next) => {
   let user = projectAuth.currentUser
   if (!user) {
-    next({ name: 'Login' })
+    this.$store.state.step = 1
+    next({ name: 'Form' })
   } else {
     next()
   }
@@ -32,14 +32,9 @@ const routes = [
     // meta: {requiresAuth: true}
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: Signup
+    path: '/form',
+    name: 'Form',
+    component: Form
   },
   {
     path: '/about',

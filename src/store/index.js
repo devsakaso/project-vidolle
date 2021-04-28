@@ -34,6 +34,8 @@ export default new Vuex.Store({
     },
     // ソート
     sorting: false,
+    // フォーム
+    step: 1,
   },
   mutations: {
     // サインイン

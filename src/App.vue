@@ -108,8 +108,7 @@ export default {
       items: [
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
         { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
-        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Login'} },
-        { title: 'サインアップ', icon: 'mdi-forum', to: {name: 'Signup'} },
+        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'} },
       ],
     }
   },
@@ -118,7 +117,8 @@ export default {
       this.$store.state.playlists = [] //他の人に表示されないように念の為初期値に戻す
       projectAuth.signOut()
       .then(() => {
-        this.$router.push({ name: 'Login' })
+        this.$store.state.step = 1
+        this.$router.push({ name: 'Form' })
         console.log('ログアウトしました')
       })
     }
