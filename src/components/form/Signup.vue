@@ -1,18 +1,11 @@
 <template>
-  <v-row class="fill-height">
-    <v-col cols="12" md="4" class="primary accent-3">
-      <v-card-text class="white--text mt-12">
-        <h4 class="text-center display-1 mb-4">おかえりなさい！</h4>
-        <h5 class="text-center">登録済の方はこちら</h5>
-      </v-card-text>
-      <div class="text-center">
-        <v-btn rounded outlined dark @click="$store.state.step--">ログイン</v-btn>
-      </div>
-    </v-col>
+  <v-row>
+
+
     <v-col cols="12" md="8">
-      <v-card-text class="mt-12">
-        <h1 class="text-center display-1 primary--text text--accent-3">新規登録はこちら</h1>
-        <div class="text-center mt-4">
+      <v-card-text class="mt-6">
+        <h1 class="text-center display-1 primary--text text--accent-3 mb-4">新規登録</h1>
+        <div class="text-center">
           <v-btn class="mx-2" fab color="black" outlined>
             <v-icon>mdi-facebook</v-icon>
           </v-btn>
@@ -23,7 +16,7 @@
             <v-icon>mdi-twitter</v-icon>
           </v-btn>
         </div>
-        <h4 class="text-center my-4">お名前、メールアドレス、パスワードを入力してスタートしましょう。</h4>
+        <h2 class="text-center my-4 text-subtitle-1">お名前、メールアドレス、パスワード<br>を入力してスタートしましょう。</h2>
         <v-form ref="form" @submit.prevent="signup">
           <v-text-field
           v-model="displayName"
@@ -52,12 +45,20 @@
           required
           >
           </v-text-field>
-        <div class="text-center my-5">
-          <v-btn rounded color="primary accent-3" dark type="submit">無料で登録する</v-btn>
-        </div>
+          <div class="text-center my-5">
+            <v-btn rounded color="primary accent-3" dark type="submit">無料で登録する</v-btn>
+          </div>
         </v-form>
       </v-card-text>
-        <h4 v-if="feedback">{{feedback}}</h4>
+    </v-col>
+
+    <v-col cals="12" md="4" class="primary accent-3 mx-3 mx-md-auto">
+      <v-card-text class="white--text mt-3">
+        <h5 class="text-center mt-2 text-subtitle-1">登録済の方はこちら</h5>
+      </v-card-text>
+      <div class="text-center mb-6">
+        <v-btn rounded outlined dark @click="$store.state.step--">ログイン</v-btn>
+      </div>
     </v-col>
   </v-row>
 </template>
