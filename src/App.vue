@@ -49,17 +49,15 @@
       app
       :mobile-breakpoint="768"
     >
-      <v-list-item>
+      <v-list-item v-if="$store.state.isSignIn">
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-title>{{ $store.state.user.displayName }}</v-list-item-title>
         </v-list-item-content>
-        <v-btn
-        @click="logout"
-        >ログアウト</v-btn>
+
       </v-list-item>
 
       <v-divider></v-divider>
@@ -80,6 +78,14 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <template v-slot:append>
+        <div class="pa-2" v-show="$store.state.isSignIn">
+          <v-btn block @click="logout">
+            ログアウト
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <!-- main -->
@@ -113,6 +119,7 @@ export default {
     }
   },
   beforeDestroy() {
+    this.$store.commit('signIn', false)
     this.$store.commit('stopSnapshotListener')
     projectAuth.signOut()
   },

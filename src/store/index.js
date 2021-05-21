@@ -22,6 +22,8 @@ export default new Vuex.Store({
     // TODO: いるかどうか判断 ログイン/サインアップ
     userId: null,
     isSignIn: false,
+    // ユーザー情報
+    user: null,
     // プレイリストタイトル（動画一覧のとき）
     currentPlaylistTitle: '',
     // 検索
@@ -42,6 +44,10 @@ export default new Vuex.Store({
     // ユーザーIDをセット
     setUser(state, userId) {
       state.userId = userId //firebaseが返したユーザー情報
+    },
+    // ユーザー情報
+    getUser(state, user) {
+      state.user = user
     },
     // サインインステータス
     signIn(state, value) {
@@ -169,6 +175,20 @@ export default new Vuex.Store({
       })
       commit('setUser', userId)
       commit('showSnackbar', '登録が完了しました')
+    },
+    // ユーザー情報取得
+    getUser({ commit }, userId) {
+      const userDoc = db.collection('users').where('userId', '==', userId)
+      let user = ''
+      userDoc.get()
+      .then(snap => {
+        snap.forEach(doc => {
+          user = doc.data()
+        })
+      }).then(() => {
+        commit('getUser', user)
+      })
+      .catch(err => console.log(err.message))
     },
     // プレイリストの追加
     addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {

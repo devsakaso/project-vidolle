@@ -72,6 +72,7 @@ export default {
           this.$store.commit('signIn', true)
           this.$store.commit('setUser', cred.user.uid)
           this.$router.push({ name: 'Playlists' })
+          this.$store.dispatch('getUser', cred.user.uid)
         })
         .catch( err => {
           this.feedback = err.message
