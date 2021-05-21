@@ -2,10 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { db, timestamp } from '@/firebase/config.js'
 
-// localbase
-// import Localbase from 'localbase'
-// let db = new Localbase('db')
-
 Vue.use(Vuex)
 
 
@@ -14,8 +10,9 @@ export default new Vuex.Store({
   state: {
     // プレイリスト
     playlists: [],
-    title: '',
-    url: '',
+    // title: '',
+    // url: '',
+    // ビデオ
     videos: [],
     videoTitle: '',
     noteTitle: '',
@@ -36,25 +33,30 @@ export default new Vuex.Store({
     },
     // ソート
     sorting: false,
-    // フォーム
+    // フォーム切替
     step: 1,
-    // サブスク
+    // サブスク解除
     unsubscribe: null,
   },
   mutations: {
     // ユーザーIDをセット
     setUser(state, user) {
-      state.user = user; //firebaseが返したユーザー情報
+      state.user = user //firebaseが返したユーザー情報
     },
+    // サインインステータス
     signIn(state, value) {
       state.isSignIn = value
     },
+    // サブスクの解除を用意
     setUnsubscribe(state, unsubscribe) {
       state.unsubscribe = unsubscribe
     },
+    // サブスクの解除
     stopSnapshotListener(state) {
       state.unsubscribe()
     },
+
+
     // プレイリストの追加
     addPlaylist(state, newPlaylist) {
       state.playlists.push(newPlaylist)
@@ -80,7 +82,6 @@ export default new Vuex.Store({
     },
     // プレイリストをセット
     setPlaylists(state, playlists) {
-      console.log('setPlaylists');
       state.playlists = playlists
     },
     // 
@@ -117,10 +118,6 @@ export default new Vuex.Store({
     setVideos(state, videos) {
       state.videos = videos
     },
-    // setPlaylistVideos(state, {videos, id}) {
-    //   state.videos = videos.filter(video => video.playlistId === id)
-    // },
-    // 
     // ノートの追加
     addNote(state, newNote) {
       state.videos.push(newNote)
@@ -170,7 +167,6 @@ export default new Vuex.Store({
       collection.doc(userId).set({
         ...newUser
       })
-      console.log(userId,'ユーザー追加のuserId');
       commit('setUser', userId)
       commit('showSnackbar', '登録が完了しました')
     },
@@ -302,7 +298,6 @@ export default new Vuex.Store({
       })
       .then(() => {
         commit('doneVideo', payload)
-        console.log(payload.done, payload.videoTitle); //TODO: なぜか逆の結果が出力される
       })
     },
     // ビデオの削除
