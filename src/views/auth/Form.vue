@@ -2,7 +2,7 @@
       <v-container>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="8">
-            <v-card class="elevation-12" v-model="$store.state.step">
+            <v-card class="elevation-12">
               <transition  mode="out-in" appear name="switch">
                 <Login v-if="$store.state.step == 1" :value="1"/>
                 <Signup v-if="$store.state.step == 2" :value="2"/>

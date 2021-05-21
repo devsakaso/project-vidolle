@@ -17,6 +17,12 @@
           </v-btn>
         </div>
         <h2 class="text-center my-4 text-subtitle-1">お名前、メールアドレス、パスワード<br>を入力してスタートしましょう。</h2>
+        <v-alert
+          dense
+          elevation="2"
+          type="error"
+          v-if="feedback"
+        >{{ feedback }}</v-alert>
         <v-form ref="form" @submit.prevent="signup">
           <v-text-field
           v-model="displayName"
@@ -81,7 +87,6 @@ export default {
     signup() {
       console.log('サインアップクリック');
       if(this.email && this.password && this.displayName) {
-        console.log('サインアップクリック');
           projectAuth.createUserWithEmailAndPassword(this.email, this.password)
           .then(cred => {
           //   // this.$store.commit('setUser', cred.user)
@@ -101,7 +106,6 @@ export default {
             console.log(err);
             this.feedback = err.message
           })
-          this.feedback = 'そのidは登録可能です'
       } else {
         this.feedback = '全ての項目を入力してください。'
       }
@@ -119,3 +123,5 @@ export default {
 
 }
 </script>
+
+
