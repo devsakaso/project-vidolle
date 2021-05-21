@@ -20,7 +20,7 @@ export default new Vuex.Store({
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // TODO: いるかどうか判断 ログイン/サインアップ
-    user: null,
+    userId: null,
     isSignIn: false,
     // プレイリストタイトル（動画一覧のとき）
     currentPlaylistTitle: '',
@@ -40,8 +40,8 @@ export default new Vuex.Store({
   },
   mutations: {
     // ユーザーIDをセット
-    setUser(state, user) {
-      state.user = user //firebaseが返したユーザー情報
+    setUser(state, userId) {
+      state.userId = userId //firebaseが返したユーザー情報
     },
     // サインインステータス
     signIn(state, value) {
@@ -175,7 +175,7 @@ export default new Vuex.Store({
       const collection = db.collection('playlists')
       const newDoc = collection.doc().id
       let newPlaylist = {
-        userId: state.user,
+        userId: state.userId,
         id: newDoc,
         title: playlistTitle,
         description: playlistDescription,
@@ -192,7 +192,7 @@ export default new Vuex.Store({
     },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
-      // const ClickedPlaylist = db.collection('playlists').where('userId' == state.user).doc(id)
+      // const ClickedPlaylist = db.collection('playlists').where('userId' == state.userId).doc(id)
       const ClickedPlaylist = db.collection('playlists').doc(id)
       ClickedPlaylist.collection('videos').get().then(snapshot => {
         // videosが空のときだけ削除
@@ -399,7 +399,7 @@ export default new Vuex.Store({
     },
     // サインアップ
     user(state) {
-      return state.user;
+      return state.userId;
     },
     isSignIn(state) {
       return state.isSignIn;

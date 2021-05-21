@@ -37,7 +37,7 @@ export default new Vuex.Store({
   mutations: {
     // サインイン
     setUser(state, user) {
-      state.user = user; //firebaseが返したユーザー情報
+      state.userId = user; //firebaseが返したユーザー情報
     },
     isSignIn(state, isSignIn) {
         state.isSignIn = isSignIn; //ログインしてるかどうか true or false
@@ -144,7 +144,7 @@ export default new Vuex.Store({
     // プレイリストの追加
     addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {
       let newPlaylist = {
-        userId: state.user,
+        userId: state.userId,
         id: Date.now(), //TODO: 要修正
         title: playlistTitle,
         description: playlistDescription,
@@ -160,7 +160,7 @@ export default new Vuex.Store({
     },
     // プレイリストの削除
     deletePlaylist({ commit }, id) {
-      // const ClickedPlaylist = db.collection('playlists').where('userId' == state.user).doc(id)
+      // const ClickedPlaylist = db.collection('playlists').where('userId' == ).doc(id)
       const ClickedPlaylist = db.collection('playlists').doc(id)
       ClickedPlaylist.collection('videos').get().then(snapshot => {
         // videosが空のときだけ削除
@@ -346,7 +346,7 @@ export default new Vuex.Store({
     },
     // サインアップ
     user(state) {
-      return state.user;
+      return state.userId;
     },
     isSignIn(state) {
       return state.isSignIn;

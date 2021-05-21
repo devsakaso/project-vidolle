@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <v-container>
-          <div>Playlists.vue: {{$store.state.user}}</div>
+          <div>Playlists.vue: {{$store.state.userId}}</div>
           <div>Playlists.vue: {{$store.state.isSignIn}}</div>
     </v-container>
 
