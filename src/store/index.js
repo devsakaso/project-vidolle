@@ -19,12 +19,14 @@ export default new Vuex.Store({
     videos: [],
     videoTitle: '',
     noteTitle: '',
-    noteCOntent:'',
+    noteContent:'',
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // TODO: いるかどうか判断 ログイン/サインアップ
     user: null,
     isSignIn: false,
+    // プレイリストタイトル（動画一覧のとき）
+    currentPlaylistTitle: '',
     // 検索
     search: null,
     // スナックバー
@@ -142,6 +144,14 @@ export default new Vuex.Store({
     // 並び替えモードのトグル
     toggleSorting(state) {
       state.sorting = !state.sorting
+    },
+    // プレイリストタイトルの表示（動画一覧のとき）
+    getPlaylistTitle(state, playlistId) {
+      state.playlists.filter(playlist => {
+        if(playlist.id == playlistId) {
+          state.currentPlaylistTitle = playlist.title
+        }
+      })
     }
   },
   actions: {

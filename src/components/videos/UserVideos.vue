@@ -7,7 +7,7 @@
         >
         
         <v-col cols="11">
-         <h2 class="primary--text">動画一覧</h2>
+         <h2 class="primary--text"><span v-if="$store.state.currentPlaylistTitle">{{$store.state.currentPlaylistTitle}}の</span>動画一覧</h2>
          <!-- <h2 class="primary--text">{{ playlistId}}の一覧</h2> -->
         </v-col>
         <v-col cols="1">
@@ -42,6 +42,7 @@ export default {
     FieldAddVideo,  
   },
   computed: {
+    // 検索結果の取得と表示
     videos: {
       get() {
         return this.$store.getters.videosFiltered
@@ -50,6 +51,17 @@ export default {
         this.$store.dispatch('setVideos', value)
       }
     }
+  },
+  data() {
+    return {
+      currentPlaylistTitle:'',
+    }
+  },
+
+// TODO: リロード後にタイトルが消えるので、vuex-persistedstate使うか検討する
+  // プレイリストのタイトル
+  mounted() {
+    this.$store.commit('getPlaylistTitle', this.playlistId)
   }
 }
 </script>

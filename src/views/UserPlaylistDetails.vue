@@ -28,7 +28,6 @@ export default {
     ButtonDoneSorting,
   },
   mounted() {
-    // TODO: よりよい方法を探す
     // リロードされたときに再描画する(1がリロードの意味)
     if(performance.navigation.type === 1) {
       this.$props.id = this.$route.path.split('playlists/')[1]
