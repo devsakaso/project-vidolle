@@ -71,7 +71,8 @@
 
 <script>
 
-import { db, projectAuth } from '@/firebase/config'
+// import { db, projectAuth } from '@/firebase/config'
+import { projectAuth } from '@/firebase/config'
 
 export default {
   name: 'Signup',
@@ -85,20 +86,18 @@ export default {
   },
   methods: {
     signup() {
-      console.log('サインアップクリック');
       if(this.email && this.password && this.displayName) {
           projectAuth.createUserWithEmailAndPassword(this.email, this.password)
           .then(cred => {
-          //   // this.$store.commit('setUser', cred.user)
-           db.collection('users').doc(cred.user.uid).set({
+
+           const newUser = {
               displayName: this.displayName,
               email: this.email,
               userId: cred.user.uid //uidはcreateUserWithEmailAndPasswordで生成されるランダムid
-            })
+            }
+            this.$store.commit('signIn', true)
+            this.$store.dispatch('addUser', newUser)
           })
-          // .then(cred => {
-            // cred.user.updateProfile({diplayName: this.displayName})
-            // })
           .then(() => {
             this.$router.push({name: 'Playlists'})
           })

@@ -2,6 +2,7 @@
   <div class="home">
     <v-container>
           <div>Playlists.vue: {{$store.state.user}}</div>
+          <div>Playlists.vue: {{$store.state.isSignIn}}</div>
     </v-container>
 
     <!-- playlistがあるとき -->
@@ -33,7 +34,9 @@ export default {
   mounted() {
     let userId = projectAuth.currentUser.uid
     this.$store.commit('setUser', userId)
-    this.$store.dispatch('getPlaylists', userId)
+    if(userId) {
+      this.$store.dispatch('getPlaylists', userId)
+    }
   },
   computed: {
     username() {

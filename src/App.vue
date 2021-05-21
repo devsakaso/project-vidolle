@@ -112,15 +112,19 @@ export default {
       ],
     }
   },
+  beforeDestroy() {
+  // this.$store.state.unsubscribe()
+    this.$store.commit('stopSnapshotListener')
+    projectAuth.signOut()
+  },
   methods: {
     logout() {
-      this.$store.state.playlists = [] //他の人に表示されないように念の為初期値に戻す
-      projectAuth.signOut()
-      .then(() => {
+      // this.$store.state.playlists = [] //他の人に表示されないように念の為初期値に戻す
+      // .then(() => {
         this.$store.state.step = 1
         this.$router.push({ name: 'Form' })
         console.log('ログアウトしました')
-      })
+      // })
     }
   }
 }

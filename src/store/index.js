@@ -38,15 +38,23 @@ export default new Vuex.Store({
     sorting: false,
     // フォーム
     step: 1,
+    // サブスク
+    unsubscribe: null,
   },
   mutations: {
-    // サインイン
+    // ユーザーIDをセット
     setUser(state, user) {
       state.user = user; //firebaseが返したユーザー情報
     },
-    // isSignIn(state, isSignIn) {
-    //     state.isSignIn = isSignIn; //ログインしてるかどうか true or false
-    // },
+    signIn(state, value) {
+      state.isSignIn = value
+    },
+    setUnsubscribe(state, unsubscribe) {
+      state.unsubscribe = unsubscribe
+    },
+    stopSnapshotListener(state) {
+      state.unsubscribe()
+    },
     // プレイリストの追加
     addPlaylist(state, newPlaylist) {
       state.playlists.push(newPlaylist)
@@ -155,6 +163,17 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // ユーザーの追加
+    addUser({ commit }, newUser) {
+      const collection = db.collection('users')
+      const userId = newUser.userId
+      collection.doc(userId).set({
+        ...newUser
+      })
+      console.log(userId,'ユーザー追加のuserId');
+      commit('setUser', userId)
+      commit('showSnackbar', '登録が完了しました')
+    },
     // プレイリストの追加
     addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {
       const collection = db.collection('playlists')
@@ -236,7 +255,7 @@ export default new Vuex.Store({
           }
           if(snap.size) {
             snap.forEach(doc => {
-                results.push({...doc.data(), id: doc.id })
+                results.push({ ...doc.data() })
             })
           }
         },
@@ -256,7 +275,6 @@ export default new Vuex.Store({
     // 
     // 
     // ビデオの追加
-    // addVideo({ commit }, {youtubeVideoId, playlistId, videoId, newVideoTitle, url}) {
     addVideo({ commit }, {youtubeVideoId, playlistId, newVideoTitle, url}) {
       const collection = db.collection('playlists').doc(playlistId).collection('videos')
       const newDoc = collection.doc().id
@@ -326,7 +344,7 @@ export default new Vuex.Store({
     //       }
     //       if(snap.size) {
     //         snap.forEach(doc => {
-    //           results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
+    //           results.push({ ...doc.data() })
     //         })
     //       }
     //     })
@@ -334,17 +352,18 @@ export default new Vuex.Store({
     // },
 
     getVideos({ state, commit }, playlistId) {
-      console.log('playlistId', playlistId);
-      db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
-       .onSnapshot(snap => {
+      const collection = db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
+       const unsubscribe = collection.onSnapshot(snap => {
          let results = []
          snap.docs.forEach(doc => {
            // must wait for the server to create the timestamp & send it back
-           results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
+           results.push({...doc.data()})
+          //  results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
          })
          state.videos = results
        })
          commit('setVideos', state.videos)
+         commit('setUnsubscribe', unsubscribe)
      },
 
     // setVideos({ commit }, videos) {

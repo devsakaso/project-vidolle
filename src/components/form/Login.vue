@@ -69,6 +69,7 @@ export default {
       if(this.email && this.password) {
         projectAuth.signInWithEmailAndPassword(this.email, this.password)
         .then(cred => {
+          this.$store.commit('signIn', true)
           this.$store.commit('setUser', cred.user.uid)
           this.$router.push({ name: 'Playlists' })
         })
