@@ -70,6 +70,7 @@ export default new Vuex.Store({
     },
     // プレイリストをセット
     setPlaylists(state, playlists) {
+      console.log('setPlaylists');
       state.playlists = playlists
     },
     // 
@@ -146,19 +147,21 @@ export default new Vuex.Store({
   actions: {
     // プレイリストの追加
     addPlaylist({ state, commit }, {playlistTitle, playlistDescription}) {
+      const collection = db.collection('playlists')
+      const newDoc = collection.doc().id
       let newPlaylist = {
         userId: state.user,
-        // id: Date.now(), //TODO: 要修正
-        id: null,
+        id: newDoc,
         title: playlistTitle,
         description: playlistDescription,
         done: false,
         dueDate: null,
         createdAt: timestamp()
       }
-      db.collection('playlists').add({
+      collection.doc(newDoc).set({
         ...newPlaylist
       })
+
       commit('addPlaylist', newPlaylist)
       commit('showSnackbar', '追加しました')
     },
@@ -243,11 +246,13 @@ export default new Vuex.Store({
     // 
     // 
     // ビデオの追加
-    addVideo({ commit }, {youtubeVideoId, playlistId, videoId, newVideoTitle, url}) {
-
+    // addVideo({ commit }, {youtubeVideoId, playlistId, videoId, newVideoTitle, url}) {
+    addVideo({ commit }, {youtubeVideoId, playlistId, newVideoTitle, url}) {
+      const collection = db.collection('playlists').doc(playlistId).collection('videos')
+      const newDoc = collection.doc().id
       let newVideo = {
         youtubeVideoId: youtubeVideoId,
-        videoId: videoId,
+        videoId: newDoc,
         playlistId: playlistId,
         videoTitle: newVideoTitle,
         url: url,
@@ -256,9 +261,8 @@ export default new Vuex.Store({
         createdAt: timestamp(),
       }
 
-      db.collection('playlists').doc(playlistId).collection('videos').add(newVideo)
-      .then(doc => {
-        newVideo.videoId = doc.id //docのidを追加 // TODO: 追加できていない
+      collection.doc(newDoc).set(newVideo)
+      .then(() => {
         commit('addVideo', newVideo)
         commit('showSnackbar', '追加しました')
       })
@@ -320,6 +324,7 @@ export default new Vuex.Store({
     // },
 
     getVideos({ state, commit }, playlistId) {
+      console.log('playlistId', playlistId);
       db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
        .onSnapshot(snap => {
          let results = []
@@ -372,8 +377,8 @@ export default new Vuex.Store({
     user(state) {
       return state.user;
     },
-    // isSignIn(state) {
-    //   return state.isSignIn;
-    // }
+    isSignIn(state) {
+      return state.isSignIn;
+    }
   }
 })
