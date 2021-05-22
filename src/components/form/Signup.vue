@@ -97,6 +97,7 @@ export default {
             }
             this.$store.commit('signIn', true)
             this.$store.dispatch('addUser', newUser)
+            this.$store.dispatch('getUser', newUser.userId)
           })
           .then(() => {
             this.$router.push({name: 'Playlists'})

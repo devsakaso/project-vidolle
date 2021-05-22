@@ -49,15 +49,12 @@
       app
       :mobile-breakpoint="768"
     >
-      <v-list-item v-if="$store.getters.isSignIn">
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-        </v-list-item-avatar>
-
+      <v-list-item v-if="$store.state.isSignIn">
+        <v-list-item-icon>
+          <v-icon class="primary--text text--accent-3">mdi-account</v-icon>
+        </v-list-item-icon>
         <v-list-item-content>
-          <!-- <v-list-item-title>{{ $store.state.user.displayName }}</v-list-item-title> -->
-          <v-list-item-title>{{ $store.getters.userId }}</v-list-item-title>
-          <v-list-item-title>{{ $store.getters.isSignIn }}</v-list-item-title>
+          <v-list-item-title class="primary--text text--accent-3">{{ $store.getters.userProfile }}</v-list-item-title>
 
         </v-list-item-content>
 
@@ -73,18 +70,18 @@
           :to="item.to"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon class="primary--text text--accent-3">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="primary--text text--accent-3">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
 
       <template v-slot:append>
         <div class="pa-2" v-show="$store.state.isSignIn">
-          <v-btn block @click="logout">
+          <v-btn block outlined class="primary--text text--accent-3 font-weight-bold" @click="logout">
             ログアウト
           </v-btn>
         </div>
@@ -114,8 +111,7 @@ export default {
   data() {
     return {
       drawer: false,
-      user: null,
-      unsubscribe: null,
+      // user: '',
       items: [
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
         { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
@@ -124,18 +120,15 @@ export default {
     }
   },
   methods: {
-    stopSnapshot() {
-      // console.log('this.$store.state.unsubscribe', this.$store.state.unsubscribe())
-      this.$store.state.unsubscribe()
-    },
     async logout() {
       (async () => {
-      //   await this.$store.state.unsubscribe
-      //   console.log('this.$store.state.unsubscribe', this.$store.state.unsubscribe);
-      await this.stopSnapshot()
+        // 関数のとき
+      if(typeof this.$store.state.unsubscribe === 'function') {
+        // console.log('this.$store.state.unsubscribe', this.$store.state.unsubscribe);
+        await this.$store.state.unsubscribe()
+      } 
       })()
       .then(() => {
-          // console.log('signOut()');
           projectAuth.signOut()
       })
       .then(() => {
@@ -144,14 +137,7 @@ export default {
           this.$router.push({ name: 'Form' })
           // console.log('ログアウトしました')
       })
-      .catch(err => console.log(err.message))
-    }
-  },
-  computed: {
-    getUser() {
-      // this.user = projectAuth.currentUser
-      console.log(projectAuth.currentUser);
-      return this.user
+      .catch(err => console.log('エラー',err.message))
     }
   }
 }

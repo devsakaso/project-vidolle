@@ -15,7 +15,7 @@ const getDefaultState = () => {
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
     // ユーザー情報
-    user: null,
+    userProfile: {},
     userId: null,
     isSignIn: false,
     // プレイリストタイトル（動画一覧のとき）
@@ -32,7 +32,7 @@ const getDefaultState = () => {
     // フォーム切替
     step: 1,
     // サブスク解除
-    unsubscribe: null,
+    unsubscribe: {},
   }
 }
 
@@ -50,7 +50,7 @@ export default new Vuex.Store({
     },
     // ユーザー情報
     getUser(state, user) {
-      state.user = user
+      state.userProfile = user
     },
     // サインインステータス
     signIn(state, value) {
@@ -59,6 +59,14 @@ export default new Vuex.Store({
     // サブスクの解除を用意
     setUnsubscribe(state, unsubscribe) {
       state.unsubscribe = unsubscribe
+    },
+
+    userDetails(state, userProfile) {
+      state.isSignIn = true
+      state.userProfile = {
+        name: userProfile.displayName,
+        picture: userProfile.photoURL
+      }
     },
 
 
@@ -181,7 +189,7 @@ export default new Vuex.Store({
     // ユーザー情報取得
     getUser({ commit }, userId) {
       const userDoc = db.collection('users').where('userId', '==', userId)
-      let user = ''
+      let user = {}
       userDoc.get()
       .then(snap => {
         snap.forEach(doc => {
@@ -409,9 +417,10 @@ export default new Vuex.Store({
     isSignIn(state) {
       return state.isSignIn;
     },
-    username(state) {
-      return state.user.displayName
+    userProfile(state) {
+      return state.userProfile.displayName
     }
+
   },
   // リロード時にデータを保持するためにプラグイン使用
   plugins: [createPersistedState(
