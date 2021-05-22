@@ -7,20 +7,17 @@ Vue.use(Vuex)
 
 const getDefaultState = () => {
   return {
-    // プレイリスト
     playlists: [],
-    // ビデオ
     videos: [],
     videoTitle: '',
     noteTitle: '',
     noteContent:'',
     // Appタイトル
     appTitle: process.env.VUE_APP_TITLE,
-    // TODO: いるかどうか判断 ログイン/サインアップ
-    userId: null,
-    isSignIn: false,
     // ユーザー情報
     user: null,
+    userId: null,
+    isSignIn: false,
     // プレイリストタイトル（動画一覧のとき）
     currentPlaylistTitle: '',
     // 検索
@@ -40,46 +37,12 @@ const getDefaultState = () => {
 }
 
 export default new Vuex.Store({
-  // state: {
-  //   // プレイリスト
-  //   playlists: [],
-  //   // title: '',
-  //   // url: '',
-  //   // ビデオ
-  //   videos: [],
-  //   videoTitle: '',
-  //   noteTitle: '',
-  //   noteContent:'',
-  //   // Appタイトル
-  //   appTitle: process.env.VUE_APP_TITLE,
-  //   // TODO: いるかどうか判断 ログイン/サインアップ
-  //   userId: null,
-  //   isSignIn: false,
-  //   // ユーザー情報
-  //   user: null,
-  //   // プレイリストタイトル（動画一覧のとき）
-  //   currentPlaylistTitle: '',
-  //   // 検索
-  //   search: null,
-  //   // スナックバー
-  //   snackbar: {
-  //     show: false,
-  //     text: ''
-  //   },
-  //   // ソート
-  //   sorting: false,
-  //   // フォーム切替
-  //   step: 1,
-  //   // サブスク解除
-  //   unsubscribe: null,
-  // },
-  
   state: getDefaultState(),
   mutations: {
+    // ログアウト時にvuex-persistedstateで永続化したstateをリセット
     reset(state) {
-
       Object.assign(state, getDefaultState())
-      console.log('resetがよばれた');
+      // console.log('resetがよばれた');
     },
     // ユーザーIDをセット
     setUser(state, userId) {
@@ -387,23 +350,6 @@ export default new Vuex.Store({
       })
     },
     // ビデオの取得
-    // getVideos({ commit }, playlistId) {
-    //  let results = []
-    //  db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
-    //   .get()
-    //   .then(
-    //     snap => {
-    //       if(!snap.size) {
-    //         console.log('動画がありません, snap.size: ', snap.size)
-    //       }
-    //       if(snap.size) {
-    //         snap.forEach(doc => {
-    //           results.push({ ...doc.data() })
-    //         })
-    //       }
-    //     })
-    //   .then(() => commit('setVideos', results))
-    // },
 
     getVideos({ state, commit }, playlistId) {
       const collection = db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
@@ -457,24 +403,21 @@ export default new Vuex.Store({
       })
     },
     // サインアップ
-    user(state) {
+    userId(state) {
       return state.userId;
     },
     isSignIn(state) {
       return state.isSignIn;
+    },
+    username(state) {
+      return state.user.displayName
     }
   },
+  // リロード時にデータを保持するためにプラグイン使用
   plugins: [createPersistedState(
     { // ストレージのキーを指定
       key: 'vidolle',
-
-      // 管理対象のステートを指定。pathsを書かない時は`modules`に書いたモジュールに含まれるステート全て。`[]`の時はどれも保存されない
-      // paths: [
-      //   'auth.isLoggedIn',
-      //   'master.dataSelected'
-      // ],
-
-      // ストレージの種類を指定する。デフォルトではローカルストレージ
+      // ストレージの種類を指定
       storage: window.sessionStorage
     }
   )]

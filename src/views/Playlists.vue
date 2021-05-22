@@ -1,9 +1,5 @@
 <template>
   <div class="home">
-    <v-container>
-          <div>Playlists.vue: {{$store.state.userId}}</div>
-          <div>Playlists.vue: {{$store.state.isSignIn}}</div>
-    </v-container>
 
     <!-- playlistがあるとき -->
     <UserPlaylists v-if="$store.state.playlists.length"/>
@@ -37,15 +33,6 @@ export default {
     if(userId) {
       this.$store.dispatch('getPlaylists', userId)
     }
-  },
-  computed: {
-    username() {
-      return this.$store.getters.user
-    },
-    userStatus() {
-      //return true in login state
-      return this.$store.getters.isSignIn
-    },
   }
 }
 </script>

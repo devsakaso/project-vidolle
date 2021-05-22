@@ -49,13 +49,16 @@
       app
       :mobile-breakpoint="768"
     >
-      <v-list-item v-if="$store.state.isSignIn">
+      <v-list-item v-if="$store.getters.isSignIn">
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>{{ $store.state.user.displayName }}</v-list-item-title>
+          <!-- <v-list-item-title>{{ $store.state.user.displayName }}</v-list-item-title> -->
+          <v-list-item-title>{{ $store.getters.userId }}</v-list-item-title>
+          <v-list-item-title>{{ $store.getters.isSignIn }}</v-list-item-title>
+
         </v-list-item-content>
 
       </v-list-item>
@@ -111,6 +114,8 @@ export default {
   data() {
     return {
       drawer: false,
+      user: null,
+      unsubscribe: null,
       items: [
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
         { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
@@ -118,25 +123,35 @@ export default {
       ]
     }
   },
-  beforeDestroy() {
-    // this.$store.reset()
-
-    console.log('beforeDestroy');
-  },
   methods: {
-    logout() {
-      // this.$store.commit('stopSnapshotListener')
-      this.$store.state.unsubscribe
-      this.$store.commit('reset')
-      console.log('logouy()メソッド');
-      projectAuth.signOut()
+    stopSnapshot() {
+      // console.log('this.$store.state.unsubscribe', this.$store.state.unsubscribe())
+      this.$store.state.unsubscribe()
+    },
+    async logout() {
+      (async () => {
+      //   await this.$store.state.unsubscribe
+      //   console.log('this.$store.state.unsubscribe', this.$store.state.unsubscribe);
+      await this.stopSnapshot()
+      })()
       .then(() => {
-        this.$store.state.step = 1
-        this.$router.push({ name: 'Form' })
-        console.log('ログアウトしました')
+          // console.log('signOut()');
+          projectAuth.signOut()
+      })
+      .then(() => {
+          this.$store.commit('reset')
+          this.$store.state.step = 1
+          this.$router.push({ name: 'Form' })
+          // console.log('ログアウトしました')
       })
       .catch(err => console.log(err.message))
-      
+    }
+  },
+  computed: {
+    getUser() {
+      // this.user = projectAuth.currentUser
+      console.log(projectAuth.currentUser);
+      return this.user
     }
   }
 }
@@ -145,8 +160,4 @@ export default {
 <style lang="sass">
   .header-container
     max-width: none !important
-  // .v-app-bar-title__content
-  //   top: 0
-  //   left: 50%
-  //   transform: translateX(-50%)
 </style>
