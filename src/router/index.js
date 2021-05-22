@@ -4,6 +4,9 @@ import Playlists from '../views/Playlists.vue'
 import UserPlaylistDetails from '../views/UserPlaylistDetails.vue'
 import Form from '../views/auth/Form.vue'
 
+// storeにアクセスするため
+import store from '@/store/index.js'
+
 // VuetifyのgoToというスクロール制御を使って、aboutページとかで下までスクロールしたら他のページでも下から始まってしまう現象を解決する
 import goTo from 'vuetify/es5/services/goto'
 
@@ -16,7 +19,7 @@ Vue.use(VueRouter)
 const requireAuth = (to, from, next) => {
   let user = projectAuth.currentUser
   if (!user) {
-    this.$store.state.step = 1
+    store.state.step = 1
     next({ name: 'Form' })
   } else {
     next()

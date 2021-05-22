@@ -17,9 +17,9 @@ Vue.config.productionTip = false
 
 let app = null
 projectAuth.onAuthStateChanged(() => {
-console.log('userの状態が変化した');
   // すでにcreatedされていない場合にappを初期化
   if(!app) {
+    console.log('userの状態が変化した');
     app = new Vue({
       router,
       store,

@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { db, timestamp } from '@/firebase/config.js'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-
-
-export default new Vuex.Store({
-  state: {
+const getDefaultState = () => {
+  return {
     // プレイリスト
     playlists: [],
-    // title: '',
-    // url: '',
     // ビデオ
     videos: [],
     videoTitle: '',
@@ -39,8 +36,51 @@ export default new Vuex.Store({
     step: 1,
     // サブスク解除
     unsubscribe: null,
-  },
+  }
+}
+
+export default new Vuex.Store({
+  // state: {
+  //   // プレイリスト
+  //   playlists: [],
+  //   // title: '',
+  //   // url: '',
+  //   // ビデオ
+  //   videos: [],
+  //   videoTitle: '',
+  //   noteTitle: '',
+  //   noteContent:'',
+  //   // Appタイトル
+  //   appTitle: process.env.VUE_APP_TITLE,
+  //   // TODO: いるかどうか判断 ログイン/サインアップ
+  //   userId: null,
+  //   isSignIn: false,
+  //   // ユーザー情報
+  //   user: null,
+  //   // プレイリストタイトル（動画一覧のとき）
+  //   currentPlaylistTitle: '',
+  //   // 検索
+  //   search: null,
+  //   // スナックバー
+  //   snackbar: {
+  //     show: false,
+  //     text: ''
+  //   },
+  //   // ソート
+  //   sorting: false,
+  //   // フォーム切替
+  //   step: 1,
+  //   // サブスク解除
+  //   unsubscribe: null,
+  // },
+  
+  state: getDefaultState(),
   mutations: {
+    reset(state) {
+
+      Object.assign(state, getDefaultState())
+      console.log('resetがよばれた');
+    },
     // ユーザーIDをセット
     setUser(state, userId) {
       state.userId = userId //firebaseが返したユーザー情報
@@ -56,10 +96,6 @@ export default new Vuex.Store({
     // サブスクの解除を用意
     setUnsubscribe(state, unsubscribe) {
       state.unsubscribe = unsubscribe
-    },
-    // サブスクの解除
-    stopSnapshotListener(state) {
-      state.unsubscribe()
     },
 
 
@@ -166,6 +202,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // logout() {
+    //   this.reset()
+    // },
     // ユーザーの追加
     addUser({ commit }, newUser) {
       const collection = db.collection('users')
@@ -424,5 +463,19 @@ export default new Vuex.Store({
     isSignIn(state) {
       return state.isSignIn;
     }
-  }
+  },
+  plugins: [createPersistedState(
+    { // ストレージのキーを指定
+      key: 'vidolle',
+
+      // 管理対象のステートを指定。pathsを書かない時は`modules`に書いたモジュールに含まれるステート全て。`[]`の時はどれも保存されない
+      // paths: [
+      //   'auth.isLoggedIn',
+      //   'master.dataSelected'
+      // ],
+
+      // ストレージの種類を指定する。デフォルトではローカルストレージ
+      storage: window.sessionStorage
+    }
+  )]
 })

@@ -115,19 +115,28 @@ export default {
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
         { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
         { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'} },
-      ],
+      ]
     }
   },
   beforeDestroy() {
-    this.$store.commit('signIn', false)
-    this.$store.commit('stopSnapshotListener')
-    projectAuth.signOut()
+    // this.$store.reset()
+
+    console.log('beforeDestroy');
   },
   methods: {
     logout() {
+      // this.$store.commit('stopSnapshotListener')
+      this.$store.state.unsubscribe
+      this.$store.commit('reset')
+      console.log('logouy()メソッド');
+      projectAuth.signOut()
+      .then(() => {
         this.$store.state.step = 1
         this.$router.push({ name: 'Form' })
         console.log('ログアウトしました')
+      })
+      .catch(err => console.log(err.message))
+      
     }
   }
 }
