@@ -27,19 +27,5 @@ export default {
     NoVideos,
     ButtonDoneSorting,
   },
-  // mounted() {
-  //   // リロードされたときに再描画する(1がリロードの意味)
-  //   if(performance.navigation.type === 1) {
-  //     this.$props.id = this.$route.path.split('playlists/')[1]
-  //     this.$store.dispatch('getVideos', this.$props.id)
-  //   }
-  // }
-  // computed: {
-    // プレイリストタイトルの取得
-    // playlistTitle() {
-    //    const playlist = this.$store.state.playlists.filter(playlist => playlist.id === this.$props.id)[0]
-    //    return playlist.title
-    // }
-  // }
 }
 </script>

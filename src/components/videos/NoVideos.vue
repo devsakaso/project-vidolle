@@ -1,24 +1,23 @@
 <template>
-<div>
-  <FieldAddVideo :playlistId="playlistId" class="mt-10"/>
-  <div
-  class="no-videos"
-  >
-    <v-icon
-    color="primary"
-    size="100"
-    class="no-videos"
-    >
-      mdi-check
-    </v-icon>
-    <div class="text-h5 primary--text">
-      動画がありません
+  <v-container px-4>
+    <v-row
+      align="center"
+      justify="space-between"
+      >
+      <v-col cols="11">
+        <h2 class="primary--text"><span v-if="$store.state.currentPlaylistTitle">{{$store.state.currentPlaylistTitle}}の</span>動画一覧</h2>
+      </v-col>
+    </v-row>
+    <FieldAddVideo :playlistId="playlistId" class="mt-10"/>
+    <div class="no-videos" >
+      <v-icon color="primary" size="100" class="no-videos">
+        mdi-check
+      </v-icon>
+      <div class="text-h5 primary--text">
+        動画がありません
+      </div>
     </div>
-  </div>
-  <div>
-
-  </div>
-</div>
+  </v-container>
 </template>
 
 <script>
@@ -29,6 +28,10 @@ export default {
   props:['playlistId'],
    components:{
     FieldAddVideo,
+  },
+  // プレイリストのタイトル
+  mounted() {
+    this.$store.commit('getPlaylistTitle', this.playlistId)
   }
 }
 </script>

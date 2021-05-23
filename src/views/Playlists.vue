@@ -29,8 +29,8 @@ export default {
   },
   mounted() {
     let userId = projectAuth.currentUser.uid
-    this.$store.commit('setUser', userId)
     if(userId) {
+      this.$store.commit('setUser', userId)
       this.$store.dispatch('getPlaylists', userId)
     }
   }
