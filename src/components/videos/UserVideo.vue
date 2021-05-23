@@ -9,19 +9,14 @@
     >
       <v-container>
         <v-row no-gutters>
-          <v-col>
-            <!-- チェックボックス -->
-            <v-card-actions>
-              <v-checkbox
-                @click="$store.dispatch('doneVideo', video)"
-                :input-value="video.done"
-                ></v-checkbox>
-            </v-card-actions>
-          </v-col>
+
+          <!-- イメージ画像 -->
           <v-col
             cols="12"
-            md="5"
+            sm="5"
+            md="6"
           >
+            <!-- 埋め込みにする場合 -->
             <!-- <EmbedVideo
             :videoUrl="video.url"
             :height="315"
@@ -30,107 +25,121 @@
             :src="youtubeThumbnail"
             ></v-img>
           </v-col>
+
+          <!-- 動画詳細 -->
           <v-col
             cols="12"
-            md="5"
+            sm="6"
+            class="d-flex flex-column justify-space-between align-start"
           >
-            <!-- 動画リスト -->
+          <v-container fluid>
+
+            <v-row
+              no-gutters
+              align="center"
+              justify="space-between"
+            >
+              <v-col
+              cols="11"
+              >
+              <!-- 動画リスト -->
               <v-card-title
               :class="{'text-decoration-line-through' : video.done,  'is-active' : activeVideo === video.videoTitle}"
               @click="setActiveVideo(video)"
                class="primary--text"
               >
-                  title: {{video.videoTitle}}
-
+                  {{video.videoTitle}}
               </v-card-title>
-              <v-card-text>
-                  url: {{video.url}} <br>
-                  youtubeID: {{video.youtubeVideoId}}
-                  <br>
-                  done: {{video.done}}
-                <v-chip
-                  class="ma-2"
-                  color="primary"
-                  label
-                  small
-                  text-color="white"
-                >
-                  <v-icon left>
-                    mdi-format-title
-                  </v-icon>
-                  {{ video.videoTitle}}
-                </v-chip>
+              </v-col>
+              <!-- プレイリスト操作メニュー -->
+              <v-col
+              cols="1"
+              >
+                <v-card-actions>
+                <VideoMenu
+                  :videoUrl="video.url"
+                  :video="video" />
+                </v-card-actions>
+              </v-col>
+            </v-row>
+          </v-container>
 
-                <v-chip
-                  class="ma-2"
-                  color="primary"
-                  label
-                  small
-                  text-color="white"
-                >
-                  <v-icon left>
-                    mdi-calendar-arrow-right
-                  </v-icon>
-                  
-                </v-chip>
+              <!-- 締切日 -->
+              <v-chip
+                v-if="video.dueDate"
+                class="ma-2 ml-4"
+                color="primary"
+                label
+                text-color="white"
+              >
+                <v-icon left small>
+                  mdi-calendar-alert
+                </v-icon>
+                {{ video.dueDate | formattedDate }}
+              </v-chip>
 
-
-              </v-card-text>
-              <v-card-actions>
-                <UserVideoDetails
-                :video="video"
-                />
-
-                <!-- 締切日 -->
-                  <v-chip
-                    v-if="video.dueDate"
-                    class="ma-2"
-                    color="primary"
-                    label
-                    text-color="white"
-                  >
-                    <v-icon left small>
-                      mdi-calendar
-                    </v-icon>
-                    {{ video.dueDate | formattedDate }}
-                  </v-chip>
-
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  icon
-                  @click="show = !show"
-                >
-                  <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-              </v-card-actions>
-
-
-                <!-- </router-link> -->
-            <!-- </v-card-content> -->
-          </v-col>
-          <v-col>
-
-            <!-- プレイリスト操作メニュー -->
-            <v-card-actions>
-            <VideoMenu
-             :videoUrl="video.url"
-              :video="video" />
+            <v-card-actions class="ma-2">
+              <!-- ノートを作成するボタン -->
+              <VideoAndNote
+              :video="video"
+              class="ml-0 mr-4"
+              />
+              <!-- ノートを見るボタン -->
+              <v-btn
+                @click="show = !show"
+                class="primary"
+              >
+                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                ノートを見る
+              </v-btn>
             </v-card-actions>
           </v-col>
-          <v-col>
-
-          </v-col>
         </v-row>
-          <!-- 補足情報のチップ -->
+
+          <!-- ノートタイトルと内容を表示する部分 -->
           <v-expand-transition>
             <div v-show="show">
               <v-divider></v-divider>
-
-<h2>ノート </h2> 
-                  noteTitle: {{video.noteTitle}}
-                  <br>
-                  noteContent: {{video.noteContent}}
+              <v-card-title class="primary--text text-h6 font-weight-medium">
+                ノート
+              </v-card-title>
+              <v-row
+                no-gutters
+                align="center"
+                justify="space-between"
+                class="flex-column"
+              >
+                <!-- ノートのタイトル -->
+                <v-col>
+                  <v-chip
+                    class="ma-2 ml-4"
+                    color="primary"
+                    outlined
+                    text-color="primary"
+                  >
+                    <v-icon left small>
+                      mdi-format-title
+                    </v-icon>
+                      タイトル
+                  </v-chip>
+                    {{video.noteTitle}}
+                </v-col>
+                <!-- ノートの内容 -->
+                <v-col>
+                  <v-chip
+                    class="ma-2 ml-4"
+                    color="primary"
+                    outlined
+                    text-color="primary"
+                  >
+                    <v-icon left small>
+                      mdi-note-text-outline
+                    </v-icon>
+                      メモ内容
+                  </v-chip>
+                    {{video.noteContent}}
+                </v-col>
+              </v-row>
             </div>
           </v-expand-transition>
       </v-container>
@@ -142,14 +151,14 @@
 import { format } from 'date-fns'
 import VideoMenu from './VideoMenu.vue'
 // import EmbedVideo from './EmbedVideo.vue'
-import UserVideoDetails from './UserVideoDetails.vue'
+import VideoAndNote from './VideoAndNote.vue'
 
 export default {
   name: 'UserVideo',
   components: {
     VideoMenu,
     // EmbedVideo,
-    UserVideoDetails,
+    VideoAndNote,
   },
   props: ['video'],
   data() {
@@ -165,13 +174,12 @@ export default {
   },
   computed: {
     youtubeThumbnail () {
-      return `http://img.youtube.com/vi/${this.$props.video.youtubeVideoId}/mqdefault.jpg`
+      return `http://img.youtube.com/vi/${this.$props.video.youtubeVideoId}/hqdefault.jpg`
     }
   },
     methods: {
     setActiveVideo(video) {
       this.activeVideo = video.videoTitle
-      console.log(video.videoId)
     }
   }
 }

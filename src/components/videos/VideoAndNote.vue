@@ -13,7 +13,7 @@
           v-bind="attrs"
           v-on="on"
         >
-         <v-icon>mdi-note</v-icon> ノート
+         <v-icon left small >mdi-note-plus-outline</v-icon> ノート作成
         </v-btn>
       </template>
       <v-card>
@@ -46,7 +46,7 @@
           :height="$vuetify.breakpoint.height - 300"
           />
         <v-divider></v-divider>
-          <v-subheader>ノート</v-subheader>
+          <v-subheader class="text-subtitle-1 primary--text text--accent-3 mx-md-10 mx-lg-auto my-lg-2 text-lg-h5">ノート</v-subheader>
           <FieldAddNote
           :video="video"
           @close="dialog = false"

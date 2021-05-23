@@ -69,11 +69,19 @@ export default {
   data() {
     return {
       dialogs: {
+        done: false,
         edit: false,
         dueDate: false,
         delete: false
       },
       items: [
+        {
+          title: '完了',
+          icon: 'mdi-check',
+          click() {
+            this.$store.dispatch('doneVideo', this.video)
+          }
+        },
         {
           title: '編集',
           icon: 'mdi-lead-pencil',

@@ -95,12 +95,12 @@ export default {
               email: this.email,
               userId: cred.user.uid //uidはcreateUserWithEmailAndPasswordで生成されるランダムid
             }
-            this.$store.commit('signIn', true)
             this.$store.dispatch('addUser', newUser)
             this.$store.dispatch('getUser', newUser.userId)
           })
           .then(() => {
             this.$router.push({name: 'Playlists'})
+            this.$store.commit('signIn', true)
           })
           .catch(err => {
             console.log(err);

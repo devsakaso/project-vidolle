@@ -5,22 +5,17 @@
         align="center"
         justify="space-between"
         >
-        
+        <!-- 動画一覧の見出し -->
         <v-col cols="11">
          <h2 class="primary--text"><span v-if="$store.state.currentPlaylistTitle">{{$store.state.currentPlaylistTitle}}の</span>動画一覧</h2>
         </v-col>
+        <!-- 動画追加のボタン -->
         <v-col cols="1">
          <FieldAddVideo :playlistId="playlistId"/>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-list
-    flat
-    class="pt-0"
-    >
-
-    </v-list>
       <UserVideo
       v-for="(video, i) in videos"
       :key="video[i]"
@@ -49,11 +44,6 @@ export default {
       set(value) {
         this.$store.dispatch('setVideos', value)
       }
-    }
-  },
-  data() {
-    return {
-      currentPlaylistTitle:'',
     }
   },
   // プレイリストのタイトル

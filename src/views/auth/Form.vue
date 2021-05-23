@@ -1,7 +1,7 @@
 <template>
-      <v-container>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="8">
+      <v-container class="mt-10">
+        <v-row align="center" justify="center" class="my-auto">
+          <v-col cols="12" sm="8" md="9">
             <v-card class="elevation-12">
               <transition  mode="out-in" appear name="switch">
                 <Login v-if="$store.state.step == 1" :value="1"/>

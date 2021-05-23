@@ -7,7 +7,7 @@
       dark
       src="appbar.jpg"
       prominent
-      height="100"
+      height="80"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -16,7 +16,7 @@
         ></v-img>
       </template>
 
-      <v-container class="py-0 header-container px-4">
+      <v-container class="py-0 header-container px-4 py-4">
         <v-row class="px-4">
           <!-- ドロワーアイコン -->
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -36,7 +36,7 @@
 
           <!-- 検索バー -->
           <!-- 検索スペースを広げるためにgridを使った(v-container&v-row) -->
-          <Search/>
+          <Search v-if="$store.state.isSignIn"/>
         </v-row>
 
       </v-container>
@@ -45,11 +45,10 @@
     <!-- ドロワーメニュー -->
     <v-navigation-drawer
       v-model="drawer"
-      temporary
       app
-      :mobile-breakpoint="768"
+      :mobile-breakpoint="900"
     >
-      <v-list-item v-if="$store.state.isSignIn">
+      <v-list-item v-show="$store.state.isSignIn" class="my-3">
         <v-list-item-icon>
           <v-icon class="primary--text text--accent-3">mdi-account</v-icon>
         </v-list-item-icon>
@@ -64,7 +63,7 @@
 
       <v-list dense>
         <v-list-item
-          v-for="item in items"
+          v-for="item in computedItems"
           :key="item.title"
           link
           :to="item.to"
@@ -80,7 +79,7 @@
       </v-list>
 
       <template v-slot:append>
-        <div class="pa-2" v-show="$store.state.isSignIn">
+        <div class="pa-2 mb-10" v-show="$store.state.isSignIn">
           <v-btn block outlined class="primary--text text--accent-3 font-weight-bold" @click="logout">
             ログアウト
           </v-btn>
@@ -111,12 +110,25 @@ export default {
   data() {
     return {
       drawer: false,
-      // user: '',
       items: [
-        { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'} },
-        { title: 'About', icon: 'mdi-forum', to: {name: 'About'} },
-        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'} },
+        { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'}, requireAuth: true},
+        { title: 'About', icon: 'mdi-forum', to: {name: 'About'}, requireAuth: '' },
+        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'}, requireAuth: false },
       ]
+    }
+  },
+  computed: {
+    // ログイン中かどうかで表示/非表示
+    computedItems() {
+      return this.items.filter(item => {
+        if(item.title === 'Playlists') {
+          return item.requireAuth = this.$store.state.isSignIn
+        } else if (item.title === 'ログイン') {
+          return item.requireAuth = !this.$store.state.isSignIn
+        } else {
+          return true
+        }
+      })
     }
   },
   methods: {
