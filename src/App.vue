@@ -5,28 +5,27 @@
       app
       color="primary"
       dark
-      src="appbar.jpg"
       prominent
       height="80"
     >
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+          gradient="to bottom, #00d2ff, #3a7bd5"
         ></v-img>
       </template>
 
       <v-container class="py-0 header-container px-4 py-4">
         <v-row class="px-4">
           <!-- ドロワーアイコン -->
-          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon @click="drawer = !drawer" class=" blue--text text--lighten-5"></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
 
         <!-- タイトル -->
           <v-app-bar-title class="text-h4">
             <router-link
             :to="{ name: 'Playlists' }"
-            class="text-decoration-none primary--text"
+            class="text-decoration-none blue--text text--lighten-5"
             >
             {{ $store.state.appTitle }}
             </router-link>
