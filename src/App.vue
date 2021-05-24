@@ -11,7 +11,7 @@
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          gradient="to bottom, #00d2ff, #3a7bd5"
+          color="primary"
         ></v-img>
       </template>
 
@@ -22,10 +22,10 @@
           <v-spacer></v-spacer>
 
         <!-- タイトル -->
-          <v-app-bar-title class="text-h4">
+          <v-app-bar-title>
             <router-link
             :to="{ name: 'Playlists' }"
-            class="text-decoration-none blue--text text--lighten-5"
+            class="text-decoration-none blue--text text--lighten-5 title"
             >
             {{ $store.state.appTitle }}
             </router-link>
@@ -113,6 +113,7 @@ export default {
       items: [
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'}, requireAuth: true},
         { title: 'About', icon: 'mdi-forum', to: {name: 'About'}, requireAuth: '' },
+        { title: 'PrivacyPolicy', icon: 'mdi-forum', to: {name: 'PrivacyPolicy'}, requireAuth: '' },
         { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'}, requireAuth: false },
       ]
     }
@@ -156,6 +157,10 @@ export default {
 </script>
 
 <style lang="sass">
+  @import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap')
+
   .header-container
     max-width: none !important
+  .v-application .title
+    font-family: 'Knewave', cursive, sans-serif !important
 </style>

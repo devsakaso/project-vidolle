@@ -44,6 +44,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/privacy-policy',
+    name: 'PrivacyPolicy',
+    component: () => import(/* webpackChunkName: "about" */ '../views/PrivacyPolicy.vue')
+  },
+  {
     path: '/playlists/:id',
     name: 'playlist',
     component: UserPlaylistDetails,
