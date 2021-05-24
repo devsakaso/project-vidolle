@@ -1,5 +1,6 @@
 <template>
   <div class="pa-4">
+  <!-- YouTube APIを使って動画を検索して追加する -->
       <!-- 検索フィールド -->
       <v-text-field
       v-model="keyword"
@@ -74,7 +75,7 @@
           <!-- 補足情報のチップ -->
           <v-expand-transition>
             <div v-show="show">
-              <v-divider></v-divider>
+              <v-divider class="my-5"></v-divider>
 
               <v-chip
                 class="ma-2"
@@ -150,11 +151,13 @@ export default {
     }
   },
   filters: {
+    // 日付をフォーマット
     formattedDate(value) {
       return format(new Date(value), 'yyyy/M/dd')
     }
   },
   methods: {
+    // YouTube検索結果の取得
     searchVideo () {
       this.params.q = this.keyword;
       axios
@@ -163,13 +166,9 @@ export default {
         })
         .then( res => {
           this.results = res.data.items;
-          // this.results.forEach(video => {
-          //   this.newVideoTitle = video.snippet.title
-          //   this.newVideoUrl = 'https://www.youtube.com/watch?v=' + video.id.videoId
-          //   console.log(this.newVideoTitle, this.newVideoUrl);
-          // })
         })
     },
+    // 動画の追加
     addVideo(video) {
         const youtubeVideoId = video.id.videoId
         const playlistId = this.$props.playlistId

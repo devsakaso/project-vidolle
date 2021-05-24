@@ -15,7 +15,7 @@
         </v-col>
       </v-row>
     </v-container>
-
+      <!-- 動画リスト -->
       <UserVideo
       v-for="(video, i) in videos"
       :key="video[i]"
@@ -46,13 +46,9 @@ export default {
       }
     }
   },
-  // プレイリストのタイトル
+  // プレイリストのタイトルを取得
   mounted() {
     this.$store.commit('getPlaylistTitle', this.playlistId)
   }
 }
 </script>
-
-<style>
-
-</style>

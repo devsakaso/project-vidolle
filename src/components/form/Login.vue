@@ -1,9 +1,9 @@
 <template>
   <v-row>
-
-        <v-col cols="12" md="8">
+    <v-col cols="12" md="8">
       <v-card-text class="mt-6">
         <h1 class="text-center display-1 primary--text text--accent-3 mb-4">ログイン</h1>
+        <!-- メール以外のログイン方法 -->
         <div class="text-center">
           <v-btn class="mx-2" fab color="black" outlined>
             <v-icon>mdi-facebook</v-icon>
@@ -16,6 +16,16 @@
           </v-btn>
         </div>
         <h2 class="text-center my-4 text-subtitle-1">お名前、メールアドレス、パスワード<br>を入力してスタートしましょう。</h2>
+        <!-- アラート -->
+        <v-alert
+          dense
+          elevation="2"
+          type="error"
+          v-if="feedback"
+        >
+          {{ feedback }}
+        </v-alert>
+        <!-- メールでのログイン -->
         <v-form ref="form" @submit.prevent="login">
           <v-text-field
           v-model="email"
@@ -40,6 +50,7 @@
       </v-card-text>
     </v-col>
 
+    <!-- 未登録の場合 -->
     <v-col cals="12" md="4" class="primary accent-3 mx-3 mx-md-auto">
       <v-card-text class="white--text mt-3">
         <h5 class="text-center mt-2 text-subtitle-1">登録がまだの方はこちら</h5>
@@ -65,13 +76,18 @@ export default {
     }
   },
   methods: {
+    // ログイン
     login() {
       if(this.email && this.password) {
         projectAuth.signInWithEmailAndPassword(this.email, this.password)
         .then(cred => {
+          // サインイン状態を更新
           this.$store.commit('signIn', true)
+          // ユーザーをセット
           this.$store.commit('setUser', cred.user.uid)
+          // プレイリストページへ移動
           this.$router.push({ name: 'Playlists' })
+          // ユーザー情報をデーターベースから取得
           this.$store.dispatch('getUser', cred.user.uid)
         })
         .catch( err => {

@@ -6,6 +6,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
+      <!-- ノートの作成ボタン -->
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="primary"
@@ -16,7 +17,9 @@
          <v-icon left small >mdi-note-plus-outline</v-icon> ノート作成
         </v-btn>
       </template>
+      <!-- 動画とノート -->
       <v-card>
+        <!-- ダイアログのヘッダー -->
         <v-toolbar
           dark
           color="primary"
@@ -41,16 +44,19 @@
           </v-toolbar-items>
         </v-toolbar>
         
-          <EmbedVideo
-          :video="video"
-          :height="$vuetify.breakpoint.height - 300"
-          />
+        <!-- 埋め込み動画 -->
+        <EmbedVideo
+        :video="video"
+        :height="$vuetify.breakpoint.height - 300"
+        />
         <v-divider></v-divider>
-          <v-subheader class="text-subtitle-1 primary--text text--accent-3 mx-md-10 mx-lg-auto my-lg-2 text-lg-h5">ノート</v-subheader>
-          <FieldAddNote
-          :video="video"
-          @close="dialog = false"
-          />
+        <!-- ノート -->
+        <v-subheader class="text-subtitle-1 primary--text text--accent-3 mx-md-10 mx-lg-auto my-lg-2 text-lg-h5">ノート</v-subheader>
+        <!-- ノート入力部分 -->
+        <FieldAddNote
+        :video="video"
+        @close="dialog = false"
+        />
       </v-card>
     </v-dialog>
   </v-row>

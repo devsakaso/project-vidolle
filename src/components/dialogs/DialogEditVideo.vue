@@ -18,6 +18,7 @@
           </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <!-- キャンセルボタン -->
           <v-btn
             @click="$emit('close')"
             color="red"
@@ -26,6 +27,7 @@
             いいえ
           </v-btn>
 
+          <!-- OKボタン -->
           <v-btn
             @click="saveVideo"
             :disabled="videoTitleInvalid"
@@ -63,12 +65,12 @@ export default {
       if(!this.videoTitleInvalid) {
           let payload = {
           playlistId: this.video.playlistId,
-          videoId: this.video.videoId, //idは選択されたもの
-          videoTitle: this.videoTitle, //titleは入力されたもの
+          videoId: this.video.videoId,
+          videoTitle: this.videoTitle,
         }
-        console.log(payload);
+        // console.log(payload);
         this.$store.dispatch('updateVideoTitle', payload)
-        this.$emit('close') //dialogを閉じる、親のVideoMenu.vueからemitされているcloseを使う
+        this.$emit('close')
         // VuetifyのGoto()で常にトップにスクロールするように設定
         this.$vuetify.goTo(0, {duration: 0})
       }

@@ -54,19 +54,19 @@ export default {
       return !this.playlistTitle || this.playlistTitle === this.playlist.title
     }
   },
-  // mount時にタイトルをplaylistTitleに格納することで表示できるようになる
+  // mount時にタイトルをplaylistTitleに格納することで表示
   mounted() {
     this.playlistTitle = this.playlist.title
   },
   methods: {
     savePlaylist() {
-      if(!this.playlistTitleInvalid) { //this忘れがち
+      if(!this.playlistTitleInvalid) {
           let payload = {
-            id: this.playlist.id, //idは選択されたもの
-          title: this.playlistTitle //titleは入力されたもの
+            id: this.playlist.id,
+            title: this.playlistTitle
         }
         this.$store.dispatch('updatePlaylistTitle', payload)
-        this.$emit('close') //dialogを閉じる、親のPlaylistMenu.vueからemitされているcloseを使う
+        this.$emit('close') 
         // VuetifyのGoto()で常にトップにスクロールするように設定
         this.$vuetify.goTo(0, {duration: 0})
       }

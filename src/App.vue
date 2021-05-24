@@ -48,19 +48,19 @@
       app
       :mobile-breakpoint="900"
     >
+      <!-- ユーザー情報 -->
       <v-list-item v-show="$store.state.isSignIn" class="my-3">
         <v-list-item-icon>
           <v-icon class="primary--text text--accent-3">mdi-account</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title class="primary--text text--accent-3">{{ $store.getters.userProfile }}</v-list-item-title>
-
         </v-list-item-content>
-
       </v-list-item>
 
       <v-divider></v-divider>
 
+      <!-- メニューアイテム -->
       <v-list dense>
         <v-list-item
           v-for="item in computedItems"
@@ -78,6 +78,7 @@
         </v-list-item>
       </v-list>
 
+      <!-- ログアウトボタン -->
       <template v-slot:append>
         <div class="pa-2 mb-10" v-show="$store.state.isSignIn">
           <v-btn block outlined class="primary--text text--accent-3 font-weight-bold" @click="logout">

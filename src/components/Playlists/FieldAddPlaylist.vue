@@ -22,6 +22,7 @@
         </v-btn>
       </template>
 
+      <!-- ダイアログの入力部分 -->
       <v-card flat>
         <v-card-title>
           <span class="headline">新規プレイリスト登録</span>
@@ -121,6 +122,5 @@ export default {
       this.addPlaylistDialog = false
     }
   }
-
 }
 </script>

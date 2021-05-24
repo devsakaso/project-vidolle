@@ -24,19 +24,15 @@ export default {
 }
 </script>
 
-<style scoped>
-.switch-enter-from,
-.switch-leave-to {
-  opacity: 0;
-}
-
-.switch-enter-to,
-.switth-leave-from {
-  opacity: 1;
-}
-
-.switch-enter-active,
-.switch-leave-active {
-  transition: all 0.3s ease-in-out;
-}
+<style lang="sass" scoped>
+.switch
+  &-enter-from,
+  &-leave-to
+    opacity: 0
+  &-enter-to,
+  &-leave-from
+    opacity: 1
+  &-enter-active,
+  &-leave-active 
+    transition: all 0.3s ease-in-out
 </style>

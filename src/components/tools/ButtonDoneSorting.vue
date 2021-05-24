@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: 現在開発中 -->
   <v-btn
   @click="$store.commit('toggleSorting')"
   class="button-done-sorting"

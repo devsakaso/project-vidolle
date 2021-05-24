@@ -11,7 +11,7 @@
       scrollable
     >
       <v-spacer></v-spacer>
-      <!-- dialogをclose -->
+      <!-- キャンセルボタン -->
       <v-btn
         @click="$emit('close')"
         text
@@ -19,7 +19,7 @@
       >
         キャンセル
       </v-btn>
-      <!-- save -->
+      <!-- OKボタン -->
       <v-btn
         @click="savePlaylist"
         text

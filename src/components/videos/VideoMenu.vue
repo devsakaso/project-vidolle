@@ -4,6 +4,7 @@
     bottom
     left
     >
+      <!-- メニューボタン -->
       <template v-slot:activator="{ on, attrs }">
         <v-btn
         color="primary"
@@ -17,6 +18,7 @@
         </v-btn>
       </template>
 
+      <!-- メニューアイテム -->
       <v-list>
         <v-list-item
         v-for="(item, i) in items"
@@ -102,31 +104,15 @@ export default {
           click() {
             this.dialogs.delete = true
           }
-        },
-        // {
-        //   title: '並び替え',
-        //   icon: 'mdi-drag-horizontal-variant',
-        //   click() {
-        //     // 検索でワード絞ってからソートしたら絞った単語しか表示されなくなるので検索中のソートを禁止する
-        //     if(!this.$store.state.search) {
-        //       // クリックしてソートマークを出現させる
-        //     this.$store.commit('toggleSorting')
-        //     } else {
-        //       this.$store.commit('showSnackbar', '検索を終了してから並び替えしてください。')
-        //     }
-        //   } 
-        // },
+        }
       ]
     }
     },
     methods: {
+      // アイテム内のクリックハンドル
       handleClick(i) {
         this.items[i].click.call(this)
       }
     }
 }
 </script>
-
-<style>
-
-</style>

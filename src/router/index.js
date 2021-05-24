@@ -32,7 +32,6 @@ const routes = [
     name: 'Playlists',
     component: Playlists,
     beforeEnter: requireAuth
-    // meta: {requiresAuth: true}
   },
   {
     path: '/form',
@@ -42,9 +41,6 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
@@ -53,8 +49,6 @@ const routes = [
     component: UserPlaylistDetails,
     props: true,
     beforeEnter: requireAuth
-    // meta: {requiresAuth: true}
-
   },
 ]
 
@@ -66,36 +60,9 @@ const router = new VueRouter({
 
 // routerのnameをタイトルの後に続くように設定
 router.beforeEach((to, from, next) => {
-//   if(to.matched.some(rec => rec.meta.requiresAuth)) {
-//     let user = projectAuth.currentUser
-//     if(!user) {
-//       next({ name: 'Login' })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
   document.title = `${process.env.VUE_APP_TITLE} - ${to.name}`
   next()
 })
-
-
-// router.beforeEach((to, from, next) => {
-//   Firebase.onAuth();
-//   let currentUserStatus = this.$store.getters["isSignIn"]
-//   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-//   if (!requiresAuth ) {
-//     next()
-//   } else if (requiresAuth && !currentUserStatus) {
-//     next('/signup');
-//   } else {
-//     next();
-//   }
-
-// })
-
-
 
 
 // 0はトップなのでtoTo(0)とする

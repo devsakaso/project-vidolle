@@ -11,7 +11,7 @@
       scrollable
     >
       <v-spacer></v-spacer>
-      <!-- dialogをclose -->
+      <!-- キャンセルボタン -->
       <v-btn
         @click="$emit('close')"
         text
@@ -19,7 +19,7 @@
       >
         キャンセル
       </v-btn>
-      <!-- save -->
+      <!-- OKボタン -->
       <v-btn
         @click="saveVideo"
         text
@@ -50,7 +50,7 @@ export default {
     saveVideo() {
       let payload = {
         playlistId: this.video.playlistId,
-        videoId: this.video.videoId, //idは選択されたもの
+        videoId: this.video.videoId,
         dueDate: this.date
       }
       this.$store.dispatch('updateVideoDueDate', payload)

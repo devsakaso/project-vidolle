@@ -7,6 +7,7 @@
         <v-form @submit.prevent="addNote">
           <v-container>
             <v-row>
+              <!-- ノートタイトル -->
               <v-col
                 cols="12"
               >
@@ -17,7 +18,7 @@
                   clearable
                 ></v-text-field>
               </v-col>
-
+              <!-- ノートの内容 -->
               <v-col
                 cols="12"
               >
@@ -27,8 +28,9 @@
                   hide-details
                 ></v-textarea>
               </v-col>
-
             </v-row>
+
+            <!-- ボタン -->
             <v-btn
               class="mr-4 my-4"
               type="submit"
@@ -62,14 +64,6 @@ export default {
       dialog: false,
     }
   },
-  // computed: {
-  //   setNoteTitle() {
-  //     return this.noteTitle
-  //   },
-  //   setNoteContent() {
-  //     return this.noteContent
-  //   }
-  // },
   methods: {
     // ノートの追加
     addNote() {

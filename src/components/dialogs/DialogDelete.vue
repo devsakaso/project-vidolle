@@ -12,9 +12,7 @@
         <v-card-text>タイトル: {{playlist.title}} を削除してよいですか？</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <!-- DialogDelete.vueはTodo中でしか使わないのでstoreでDialogの状態管理をしない、
-          そのため、Vuexを使っていてもグローバルで活用しないデータもある
-          $emitしてPlaylist.vueに渡す -->
+          <!-- キャンセルボタン -->
           <v-btn
             @click="$emit('close')"
             color="red"
@@ -22,7 +20,7 @@
           >
             いいえ
           </v-btn>
-          <!-- deletePlaylist()にplaylist.idを渡すことで削除できる -->
+          <!-- OKボタン -->
           <v-btn
             @click="$store.dispatch('deletePlaylist', playlist.id)"
             color="primary"

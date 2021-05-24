@@ -6,38 +6,36 @@
     :ripple="false"
     >
       <template v-slot:default>
-        <!-- チェックボックス -->
+        <!-- 完了をトグルするチェックボックス -->
         <v-list-item-action>
           <v-checkbox
             :input-value="playlist.done"
             @click="$store.dispatch('donePlaylist', playlist)"
-            
-            ></v-checkbox>
+          ></v-checkbox>
         </v-list-item-action>
 
         <!-- プレイリストタイトル -->
         <v-list-item-content>
-          <!-- TODO: router-linkいれた、要確認 -->
+          <!-- router-linkで個々のプレイリストへ移動 -->
           <router-link :to="{ name: 'playlist', params: { id: playlist.id } }" @click.native="$store.dispatch('getVideos', playlist.id)">
-          <v-list-item-title
-          :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
-          class="text-h6"
-          >
+            <v-list-item-title
+            :class="{'text-decoration-line-through' : playlist.done}"
+            class="text-h6"
+            >
               {{playlist.title}}
-              
-              <!-- , id: {{playlist.id}} -->
             </v-list-item-title>
-            </router-link>
-             <v-list-item-subtitle
-              :class="{'text-decoration-line-through' : playlist.done,  'is-active' : activePlaylist === playlist.title}"
-              class="grey--text"
-             >
-             {{playlist.description}}
-             </v-list-item-subtitle>
+          </router-link>
+          <!-- プレイリストのメモ -->
+          <v-list-item-subtitle
+          :class="{'text-decoration-line-through' : playlist.done}"
+          class="grey--text"
+          >
+          {{playlist.description}}
+          </v-list-item-subtitle>
         </v-list-item-content>
 
         <!-- 締切日 -->
-        <!-- v-if="playlist.dueDate"というのは、nullの場合は表示したくないので。 -->
+        <!-- v-if="playlist.dueDate"は、nullの場合は表示させないため。 -->
         <v-list-item-action v-if="playlist.dueDate">
           <v-list-item-action-text>
             <v-icon small>mdi-calendar</v-icon>
@@ -49,19 +47,6 @@
           <v-list-item-action>
            <PlaylistMenu :playlist="playlist" />
           </v-list-item-action>
-
-        <!-- ドラッグ -->
-        <v-list-item-action
-        v-if="$store.state.sorting"
-        >
-          <v-btn
-            color="primary"
-            class="handle"
-            icon
-          >
-            <v-icon>mdi-drag-horizontal-variant</v-icon>
-          </v-btn>
-        </v-list-item-action>
       </template>
     </v-list-item>
   </div>
@@ -70,29 +55,17 @@
 <script>
 import { format } from 'date-fns'
 import PlaylistMenu from './PlaylistMenu.vue'
-// import UserPlaylistDetails from './UserPlaylistDetails.vue'
 
 export default {
   name: 'UserPlaylist',
   components: {
     PlaylistMenu,
-    // UserPlaylistDetails,
   },
   props: ['playlist'],
-  data() {
-    return {
-      activePlaylist: '',
-    }
-  },
   filters: {
+    // 日付をフォーマット
     formattedDate(value) {
       return format(new Date(value), 'M/dd')
-    }
-  },
-  methods: {
-    setActivePlaylist(playlist) {
-      this.activePlaylist = playlist.title
-      return playlist.title
     }
   }
 }
@@ -100,8 +73,6 @@ export default {
 
 
 <style lang="sass">
-  .sortable-ghost
-    opacity: 0
-  .sortable-drag
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+  .is-active
+    background: red
 </style>

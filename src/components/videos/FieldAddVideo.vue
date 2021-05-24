@@ -42,7 +42,6 @@
             検索する
             <v-icon>mdi-youtube</v-icon>
           </v-tab>
-
         </v-tabs>
 
         <!-- タブアイテム1 -->
@@ -55,9 +54,8 @@
               <v-form @submit.prevent="addVideo">
                 <v-container>
                   <v-row>
-                    <v-col
-                      cols="12"
-                    >
+                    <!-- 動画のタイトル入力部分 -->
+                    <v-col cols="12">
                       <v-text-field
                         v-model="newVideoTitle"
                         label="動画タイトル"
@@ -66,10 +64,8 @@
                         required
                       ></v-text-field>
                     </v-col>
-
-                    <v-col
-                      cols="12"
-                    >
+                    <!-- 動画のURL入力部分 -->
+                    <v-col cols="12">
                       <v-text-field
                         v-model="newVideoUrl"
                         label="url"
@@ -78,8 +74,9 @@
                         required
                       ></v-text-field>
                     </v-col>
-
                   </v-row>
+
+                  <!-- ボタン -->
                   <v-btn
                     class="mr-4 my-4"
                     type="submit"
@@ -108,7 +105,7 @@
                 <span class="headline">YouTube検索</span>
               </v-card-title>
               <SearchVideo
-              :playlistId="playlistId"
+                :playlistId="playlistId"
               />
               </v-card>
             </v-tab-item>
@@ -135,7 +132,7 @@ export default {
       newVideoUrl: '',
       addVideoDialog: false,
       tabs: null,
-      youtubeVideoId: null,
+      youtubeVideoId: '',
     }
   },
   computed: {
@@ -148,11 +145,12 @@ export default {
     // 動画の追加
     addVideo() {
       if(this.newVideoUrl.startsWith('https://youtu.be/')) {
+        // YoutubeIDは11桁
        this.youtubeVideoId = this.newVideoUrl.split('youtu.be/')[1].substring(0,11)
       } else if(this.newVideoUrl.startsWith('https://www.youtube.com/watch?v=')) {
        this.youtubeVideoId = this.newVideoUrl.split('v=')[1].substring(0,11)
       } else {
-        this.youtubeVideoId = null
+        this.youtubeVideoId = ''
       }
 
       if(!this.newVideoTitleInvalid) {

@@ -7,9 +7,9 @@
     <!-- playlistがないとき -->
     <NoPlaylists v-else/>
 
-    <!-- ソート終了ボタン -->
+    <!-- TODO: ソートの導入中止中 -->
     <!-- ソートがtrueのときのみ表示 -->
-    <ButtonDoneSorting v-if="$store.state.sorting"/>
+    <!-- <ButtonDoneSorting v-if="$store.state.sorting"/> -->
     
   </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 import UserPlaylists from '@/components/playlists/UserPlaylists.vue'
 import NoPlaylists from '@/components/playlists/NoPlaylists.vue'
-import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
+// import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 import { projectAuth } from '@/firebase/config'
 
 export default {
@@ -25,7 +25,7 @@ export default {
   components: {
     UserPlaylists,
     NoPlaylists,
-    ButtonDoneSorting,
+    // ButtonDoneSorting,
   },
   mounted() {
     let userId = projectAuth.currentUser.uid

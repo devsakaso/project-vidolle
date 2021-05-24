@@ -7,9 +7,9 @@
     <!-- videoがないとき -->
     <NoVideos :playlistId="id" v-else/>
 
-    <!-- ソート終了ボタン -->
+    <!-- TODO: ソートの導入中止中 -->
     <!-- ソートがtrueのときのみ表示 -->
-    <ButtonDoneSorting v-if="$store.state.sorting"/>
+    <!-- <ButtonDoneSorting v-if="$store.state.sorting"/> -->
     
   </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 import UserVideos from '@/components/videos/UserVideos.vue'
 import NoVideos from '@/components/videos/NoVideos.vue'
-import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
+// import ButtonDoneSorting from '@/components/tools/ButtonDoneSorting.vue'
 
 export default {
   name: 'playlist',
@@ -25,7 +25,7 @@ export default {
   components: {
     UserVideos,
     NoVideos,
-    ButtonDoneSorting,
+    // ButtonDoneSorting,
   },
 }
 </script>

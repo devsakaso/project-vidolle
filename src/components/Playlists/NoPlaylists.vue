@@ -1,22 +1,21 @@
 <template>
 <div>
+  <v-container px-4>
+    <v-row
+      align="center"
+      justify="space-between"
+      >
+      <v-col cols="11">
+        <h2 class="primary--text my-4">すべてのプレイリスト</h2>
+      </v-col>
+      <v-col cols="1">
+        <!-- プレイリスト追加のフィールド -->
+        <FieldAddPlaylist/>
+      </v-col>
+    </v-row>
+  </v-container>
 
-    <v-container px-4>
-
-      <v-row
-        align="center"
-        justify="space-between"
-        >
-        
-        <v-col cols="11">
-          <h2 class="primary--text my-4">すべてのプレイリスト</h2>
-        </v-col>
-        <v-col cols="1">
-          <!-- プレイリスト追加のフィールド -->
-          <FieldAddPlaylist/>
-        </v-col>
-      </v-row>
-    </v-container>
+  <!-- プレイリストないというメッセージ -->
   <div
   class="no-playlists"
   >
@@ -52,5 +51,4 @@ export default {
     top: 50%
     transform: translate(-50%, -50%)
     opacity: 0.5
-
 </style>

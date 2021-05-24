@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="sass">
-  // 45pxというのは検証で微調整した結果
+  // 検索アイコンのデフォルト状態45pxというのは検証で微調整した結果
  .expanding-search
    transition: max-width 0.3s
    .v-input__slot
