@@ -4,7 +4,7 @@
       <v-card-text class="mt-6">
         <h1 class="text-center display-1 primary--text text--accent-3 mb-4">新規登録</h1>
         <!-- メール以外のログイン方法 -->
-        <div class="text-center">
+        <!-- <div class="text-center">
           <v-btn class="mx-2" fab color="black" outlined>
             <v-icon>mdi-facebook</v-icon>
           </v-btn>
@@ -14,7 +14,7 @@
           <v-btn class="mx-2" fab color="black" outlined>
             <v-icon>mdi-twitter</v-icon>
           </v-btn>
-        </div>
+        </div> -->
         <h2 class="text-center my-4 text-subtitle-1">お名前、メールアドレス、パスワード<br>を入力してスタートしましょう。</h2>
         <!-- アラート -->
         <v-alert
