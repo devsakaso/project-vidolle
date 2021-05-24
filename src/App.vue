@@ -45,6 +45,7 @@
     <v-navigation-drawer
       v-model="drawer"
       app
+      temporary
       :mobile-breakpoint="900"
     >
       <!-- ユーザー情報 -->
@@ -112,9 +113,9 @@ export default {
       drawer: false,
       items: [
         { title: 'Playlists', icon: 'mdi-view-dashboard', to: {name: 'Playlists'}, requireAuth: true},
-        { title: 'About', icon: 'mdi-forum', to: {name: 'About'}, requireAuth: '' },
-        { title: 'PrivacyPolicy', icon: 'mdi-forum', to: {name: 'PrivacyPolicy'}, requireAuth: '' },
-        { title: 'ログイン', icon: 'mdi-forum', to: {name: 'Form'}, requireAuth: false },
+        { title: 'About', icon: 'mdi-information', to: {name: 'About'}, requireAuth: '' },
+        { title: 'PrivacyPolicy', icon: 'mdi-shield-lock', to: {name: 'PrivacyPolicy'}, requireAuth: '' },
+        { title: 'ログイン', icon: 'mdi-login', to: {name: 'Form'}, requireAuth: false },
       ]
     }
   },
