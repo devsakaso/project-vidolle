@@ -358,17 +358,17 @@ export default new Vuex.Store({
       })
     },
     // ビデオの取得
-
+    // TODO: Firebaseの二重発火？がたまにあるので要修正
     getVideos({ state, commit }, playlistId) {
       const collection = db.collection('playlists').doc(playlistId).collection('videos').orderBy('createdAt')
-       const unsubscribe = collection.onSnapshot(snap => {
+      const unsubscribe = collection.onSnapshot(snap => {
          let results = []
-         snap.docs.forEach(doc => {
-           // must wait for the server to create the timestamp & send it back
-           results.push({...doc.data()})
-          //  results.push({ ...doc.data(), videoId: doc.id }) //videoIdをdoc.idに更新
-         })
-         state.videos = results
+
+           snap.docs.forEach(doc => {
+              // results.push({...doc.data()})
+             results.push(doc.data())
+            })
+            state.videos = results
        })
          commit('setVideos', state.videos)
          commit('setUnsubscribe', unsubscribe)
@@ -404,7 +404,9 @@ export default new Vuex.Store({
     },
     videosFiltered(state) {
       if(!state.search) {
-        return state.videos
+        // 重複を削除
+        let newVideos = Array.from(new Set(state.videos))
+        return newVideos
       }
       return state.videos.filter(video => {
        return video.videoTitle.toLowerCase().includes(state.search.toLowerCase())

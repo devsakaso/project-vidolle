@@ -21,11 +21,6 @@
             <v-img
             :src="youtubeThumbnail"
             ></v-img>
-            <!-- <div v-else class="no-images">
-              <v-icon color="primary" size="100" class="no-videos">
-                mdi-note-text-outline
-              </v-icon>
-            </div> -->
           </v-col>
 
           <!-- 動画詳細 -->
@@ -167,14 +162,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass">
-  .no-images
-    height: 328px
-    width: 480px
-    // position: absolute
-    // left: 50%
-    // top: 50%
-    // transform: translate(-50%, -50%)
-    opacity: 0.5
-</style>
