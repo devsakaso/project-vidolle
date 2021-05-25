@@ -26,3 +26,5 @@ pnpm-debug.log*
 #firebase
 firestore.rules
 composables
+
+.firebase

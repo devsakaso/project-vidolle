@@ -1,5 +1,6 @@
 <template>
-      <v-container class="mt-10">
+  <v-main>
+      <v-container>
         <v-row align="center" justify="center" class="my-auto">
           <v-col cols="12" sm="8" md="9">
             <v-card class="elevation-12">
@@ -11,6 +12,7 @@
           </v-col>
         </v-row>
       </v-container>
+  </v-main>
 </template>
 
 <script>

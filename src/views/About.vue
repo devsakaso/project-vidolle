@@ -1,5 +1,5 @@
 <template>
-  <v-main class="my-3 mx-3 mt back">
+  <v-main class="my-3 mx-3 main-pt">
     <v-container>
       <v-row justify="center">
         <v-col cols="12" sm="11" md="10" lg="8">
@@ -63,6 +63,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
- .mt
-   margin-top: 80px
+ .main-pt
+   padding-top: 0px !important
 </style>
