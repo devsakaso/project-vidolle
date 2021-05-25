@@ -5,8 +5,8 @@
       app
       color="primary"
       dark
-      prominent
       height="80"
+      dense
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -15,7 +15,7 @@
         ></v-img>
       </template>
 
-      <v-container class="py-0 header-container px-4 py-4">
+      <v-container class="py-0 header-container">
         <v-row class="px-4">
           <!-- ドロワーアイコン -->
           <v-app-bar-nav-icon @click="drawer = !drawer" class=" blue--text text--lighten-5"></v-app-bar-nav-icon>
@@ -25,7 +25,7 @@
           <v-app-bar-title>
             <router-link
             :to="{ name: 'Playlists' }"
-            class="text-decoration-none blue--text text--lighten-5 title"
+            class="text-decoration-none blue--text text--lighten-5 title "
             >
             {{ $store.state.appTitle }}
             </router-link>
@@ -160,8 +160,14 @@ export default {
 <style lang="sass">
   @import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap')
 
-  .header-container
-    max-width: none !important
+
   .v-application .title
     font-family: 'Knewave', cursive, sans-serif !important
+
+  // title部分が隠れるのを防止
+  .v-app-bar-title__placeholder, .v-app-bar-title__content
+    overflow: visible !important
+    text-overflow: clip !important
+    white-space: normal !important
+
 </style>

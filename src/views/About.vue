@@ -1,5 +1,5 @@
 <template>
-  <v-main class="my-3 mx-3">
+  <v-main class="my-3 mx-3 mt back">
     <v-container>
       <v-row justify="center">
         <v-col cols="12" sm="11" md="10" lg="8">
@@ -43,6 +43,12 @@
             <h2 class="primary--text mb-4">検索機能</h2>
             <p>プレイリスト一覧のページでもYouTube動画一覧のページでも、登録しているタイトルを検索して、マッチしたものだけを表示することができます。</p>
           </div>
+
+          <div class="mb-10">
+            <h2 class="primary--text mb-4">ERR_BLOCKED_BY_CLIENTが出る場合</h2>
+            <p>コンソールにてERR_BLOCKED_BY_CLIENTとエラーが出る場合で、「adservice.google」と確認できる場合、アドブロック系の拡張機能によるエラーの可能性があります。</p>
+            <p>当アプリに広告は入っていないので、あったんアドブロック系の拡張機能を停止してから当アプリをご活用ください。</p>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -55,3 +61,8 @@ export default {
   name: 'About'
 }
 </script>
+
+<style lang="sass" scoped>
+ .mt
+   margin-top: 80px
+</style>

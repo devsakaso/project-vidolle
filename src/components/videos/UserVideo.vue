@@ -162,7 +162,7 @@ export default {
   computed: {
     // youtubeのサムネイルを表示、画像がないときはno-imageの画像を表示
     youtubeThumbnail () {
-      return this.$props.video.youtubeVideoId ? `http://img.youtube.com/vi/${this.$props.video.youtubeVideoId}/hqdefault.jpg` : require('@/assets/no-image.png')
+      return this.$props.video.youtubeVideoId ? `https://img.youtube.com/vi/${this.$props.video.youtubeVideoId}/hqdefault.jpg` : require('@/assets/no-image.png')
     }
   }
 }
